@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
-import type { LoginRequest, RegisterRequest, UserRole } from "@shared/api";
+import { API_ENDPOINTS } from "@/lib/api";
+import type { LoginRequest, RegisterRequest, SendAccessCodeRequest } from "@shared/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -22,22 +23,69 @@ import {
 export default function Auth() {
   const [isLogin, setIsLogin] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const [role, setRole] = useState<UserRole>("participant");
+  const [useAccessCode, setUseAccessCode] = useState(false);
+  const [codeSent, setCodeSent] = useState(false);
+  const [countdown, setCountdown] = useState(0);
   const navigate = useNavigate();
   const { login } = useAuth();
 
   const verse = getVerseByTheme("christmas");
 
   const [formData, setFormData] = useState({
-    email: "",
+    phone: "",
     password: "",
     name: "",
-    phone: "",
+    accessCode: "",
   });
+
+  useEffect(() => {
+    if (countdown > 0) {
+      const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
+      return () => clearTimeout(timer);
+    } else if (countdown === 0 && codeSent) {
+      setCodeSent(false);
+    }
+  }, [countdown, codeSent]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSendAccessCode = async () => {
+    if (!formData.phone) {
+      toast.error("Por favor ingresa tu número de teléfono");
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const response = await fetch(API_ENDPOINTS.SEND_ACCESS_CODE, {
+        method: "POST",
+        headers: { 
+          "accept": "application/json",
+          "Content-Type": "application/json" 
+        },
+        body: JSON.stringify({
+          numeroTelefono: formData.phone,
+        } as SendAccessCodeRequest),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setCodeSent(true);
+        setCountdown(300); // 5 minutos
+        toast.success("¡Código enviado por WhatsApp!");
+      } else {
+        toast.error(data.error || data.message || "Error al enviar el código");
+      }
+    } catch (error) {
+      console.error("Error al enviar código:", error);
+      toast.error("Error de conexión");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -45,25 +93,46 @@ export default function Auth() {
     setIsLoading(true);
 
     try {
-      const response = await fetch("/api/auth/login", {
+      const loginData: LoginRequest = {
+        numeroTelefono: formData.phone,
+      };
+
+      if (useAccessCode) {
+        if (!formData.accessCode) {
+          toast.error("Por favor ingresa el código de acceso");
+          setIsLoading(false);
+          return;
+        }
+        loginData.codigoAcceso = formData.accessCode;
+      } else {
+        if (!formData.password) {
+          toast.error("Por favor ingresa tu contraseña");
+          setIsLoading(false);
+          return;
+        }
+        loginData.contrasena = formData.password;
+      }
+
+      const response = await fetch(API_ENDPOINTS.LOGIN, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: formData.email,
-          password: formData.password,
-        } as LoginRequest),
+        headers: { 
+          "accept": "application/json",
+          "Content-Type": "application/json" 
+        },
+        body: JSON.stringify(loginData),
       });
 
       const data = await response.json();
 
-      if (data.success && data.user) {
-        login(data.user);
+      if (data.success && data.data) {
+        login(data.data);
         toast.success("¡Iniciado sesión correctamente!");
-        navigate(data.user.role === "admin" ? "/admin" : "/participant");
+        navigate(data.data.esAdmin ? "/admin" : "/participant");
       } else {
-        toast.error(data.message || "Error al iniciar sesión");
+        toast.error(data.error || data.message || "Error al iniciar sesión");
       }
-    } catch {
+    } catch (error) {
+      console.error("Error de login:", error);
       toast.error("Error de conexión");
     } finally {
       setIsLoading(false);
@@ -75,28 +144,31 @@ export default function Auth() {
     setIsLoading(true);
 
     try {
-      const response = await fetch("/api/auth/register", {
+      const response = await fetch(API_ENDPOINTS.REGISTER, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "accept": "application/json",
+          "Content-Type": "application/json" 
+        },
         body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
-          password: formData.password,
-          role,
+          nombreCompleto: formData.name,
+          numeroTelefono: formData.phone,
+          contrasena: formData.password,
+          esAdmin: false,
         } as RegisterRequest),
       });
 
       const data = await response.json();
 
-      if (data.success && data.user) {
-        login(data.user);
+      if (data.success && data.data) {
+        login(data.data);
         toast.success("¡Registro completado!");
-        navigate(data.user.role === "admin" ? "/admin" : "/participant");
+        navigate(data.data.esAdmin ? "/admin" : "/participant");
       } else {
-        toast.error(data.message || "Error al registrarse");
+        toast.error(data.error || data.message || "Error al registrarse");
       }
-    } catch {
+    } catch (error) {
+      console.error("Error de registro:", error);
       toast.error("Error de conexión");
     } finally {
       setIsLoading(false);
@@ -186,89 +258,131 @@ export default function Auth() {
                           className="bg-slate-800/50 border-blue-500/30 text-blue-50 placeholder-blue-400/50 focus:border-blue-400"
                         />
                       </div>
-
-                      <div className="space-y-1">
-                        <label className="text-xs md:text-sm font-medium text-blue-200">
-                          Teléfono
-                        </label>
-                        <Input
-                          type="tel"
-                          name="phone"
-                          placeholder="+1234567890"
-                          value={formData.phone}
-                          onChange={handleInputChange}
-                          required
-                          className="bg-slate-800/50 border-blue-500/30 text-blue-50 placeholder-blue-400/50 focus:border-blue-400"
-                        />
-                      </div>
-
-                      <div className="space-y-1">
-                        <label className="text-xs md:text-sm font-medium text-blue-200">
-                          Tipo de Cuenta
-                        </label>
-                        <div className="flex gap-3">
-                          <label className="flex items-center cursor-pointer">
-                            <input
-                              type="radio"
-                              value="participant"
-                              checked={role === "participant"}
-                              onChange={(e) =>
-                                setRole(e.target.value as UserRole)
-                              }
-                              className="mr-2 accent-blue-500"
-                            />
-                            <span className="text-xs md:text-sm text-blue-200">
-                              Participante
-                            </span>
-                          </label>
-                          <label className="flex items-center cursor-pointer">
-                            <input
-                              type="radio"
-                              value="admin"
-                              checked={role === "admin"}
-                              onChange={(e) =>
-                                setRole(e.target.value as UserRole)
-                              }
-                              className="mr-2 accent-blue-500"
-                            />
-                            <span className="text-xs md:text-sm text-blue-200">
-                              Administrador
-                            </span>
-                          </label>
-                        </div>
-                      </div>
                     </>
                   )}
 
                   <div className="space-y-1">
                     <label className="text-xs md:text-sm font-medium text-blue-200">
-                      Correo Electrónico
+                      Número de Teléfono
                     </label>
                     <Input
-                      type="email"
-                      name="email"
-                      placeholder="tu@email.com"
-                      value={formData.email}
+                      type="tel"
+                      name="phone"
+                      placeholder="987654321"
+                      value={formData.phone}
                       onChange={handleInputChange}
                       required
                       className="bg-slate-800/50 border-blue-500/30 text-blue-50 placeholder-blue-400/50 focus:border-blue-400"
                     />
                   </div>
 
-                  <div className="space-y-1">
-                    <label className="text-xs md:text-sm font-medium text-blue-200">
-                      Contraseña
-                    </label>
-                    <Input
-                      type="password"
-                      name="password"
-                      placeholder="••••••••"
-                      value={formData.password}
-                      onChange={handleInputChange}
-                      required
-                      className="bg-slate-800/50 border-blue-500/30 text-blue-50 placeholder-blue-400/50 focus:border-blue-400"
-                    />
-                  </div>
+                  {isLogin && (
+                    <div className="space-y-3">
+                      {/* Selector de método de autenticación */}
+                      <div className="flex gap-2 p-1 bg-slate-800/50 rounded-lg border border-blue-500/30">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setUseAccessCode(false);
+                            setFormData({ ...formData, password: "", accessCode: "" });
+                          }}
+                          className={`flex-1 py-2 px-3 rounded-md text-xs md:text-sm font-medium transition-all ${
+                            !useAccessCode
+                              ? "bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg"
+                              : "text-blue-300 hover:text-blue-100"
+                          }`}
+                        >
+                          🔑 Contraseña
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setUseAccessCode(true);
+                            setFormData({ ...formData, password: "", accessCode: "" });
+                          }}
+                          className={`flex-1 py-2 px-3 rounded-md text-xs md:text-sm font-medium transition-all ${
+                            useAccessCode
+                              ? "bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg"
+                              : "text-blue-300 hover:text-blue-100"
+                          }`}
+                        >
+                          📱 Código WhatsApp
+                        </button>
+                      </div>
+
+                      {/* Campo de contraseña */}
+                      {!useAccessCode && (
+                        <div className="space-y-1">
+                          <label className="text-xs md:text-sm font-medium text-blue-200">
+                            Contraseña
+                          </label>
+                          <Input
+                            type="password"
+                            name="password"
+                            placeholder="••••••••"
+                            value={formData.password}
+                            onChange={handleInputChange}
+                            required
+                            className="bg-slate-800/50 border-blue-500/30 text-blue-50 placeholder-blue-400/50 focus:border-blue-400"
+                          />
+                        </div>
+                      )}
+
+                      {/* Campo de código de acceso */}
+                      {useAccessCode && (
+                        <div className="space-y-2">
+                          <label className="text-xs md:text-sm font-medium text-blue-200">
+                            Código de Acceso
+                          </label>
+                          <div className="flex gap-2">
+                            <Input
+                              type="text"
+                              name="accessCode"
+                              placeholder="Ingresa el código"
+                              value={formData.accessCode}
+                              onChange={handleInputChange}
+                              required
+                              maxLength={6}
+                              className="bg-slate-800/50 border-blue-500/30 text-blue-50 placeholder-blue-400/50 focus:border-blue-400"
+                            />
+                            <Button
+                              type="button"
+                              onClick={handleSendAccessCode}
+                              disabled={isLoading || countdown > 0}
+                              className="bg-blue-600 hover:bg-blue-700 text-white whitespace-nowrap px-3 md:px-4"
+                            >
+                              {countdown > 0 
+                                ? `${Math.floor(countdown / 60)}:${(countdown % 60).toString().padStart(2, '0')}`
+                                : "Enviar"}
+                            </Button>
+                          </div>
+                          {codeSent && (
+                            <div className="flex items-center gap-2 text-xs text-green-400 bg-green-950/30 border border-green-500/30 rounded-lg p-2">
+                              <span>✓</span>
+                              <span>Código enviado por WhatsApp exitosamente</span>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {!isLogin && (
+                    <div className="space-y-1">
+                      <label className="text-xs md:text-sm font-medium text-blue-200">
+                        Contraseña
+                      </label>
+                      <Input
+                        type="password"
+                        name="password"
+                        placeholder="••••••••"
+                        value={formData.password}
+                        onChange={handleInputChange}
+                        required
+                        className="bg-slate-800/50 border-blue-500/30 text-blue-50 placeholder-blue-400/50 focus:border-blue-400"
+                      />
+                    </div>
+                  )}
 
                   <Button
                     type="submit"
@@ -284,35 +398,32 @@ export default function Auth() {
                 </form>
               )}
 
-              <div className="mt-4">
+              <div className="mt-6">
+                <div className="relative">
+                  <div className="absolute inset-0 flex items-center">
+                    <span className="w-full border-t border-blue-500/30" />
+                  </div>
+                  <div className="relative flex justify-center text-xs uppercase">
+                    <span className="bg-slate-900/90 px-2 text-blue-400">
+                      {isLogin ? "¿No tienes cuenta?" : "¿Ya tienes cuenta?"}
+                    </span>
+                  </div>
+                </div>
                 <button
                   type="button"
                   onClick={() => {
                     setIsLogin(!isLogin);
                     setFormData({
-                      email: "",
+                      phone: "",
                       password: "",
                       name: "",
-                      phone: "",
+                      accessCode: "",
                     });
                   }}
-                  className="w-full text-center text-xs md:text-sm text-blue-300 hover:text-blue-200 font-medium transition-colors"
+                  className="w-full mt-4 px-4 py-2.5 text-sm font-semibold text-blue-200 bg-blue-900/30 border-2 border-blue-500/40 rounded-lg hover:bg-blue-900/50 hover:border-blue-400/60 transition-all duration-200 shadow-lg hover:shadow-blue-500/20"
                 >
-                  {isLogin
-                    ? "¿No tienes cuenta? Regístrate aquí"
-                    : "¿Ya tienes cuenta? Inicia sesión"}
+                  {isLogin ? "Crear cuenta nueva" : "Iniciar sesión"}
                 </button>
-              </div>
-
-              <div className="mt-4 pt-4 border-t border-blue-500/20">
-                <p className="text-xs text-blue-300 text-center mb-2 font-semibold">
-                  Cuenta de prueba:
-                </p>
-                <div className="bg-blue-950/50 p-2 rounded-lg space-y-0.5 text-xs border border-blue-500/30">
-                  <p className="text-blue-200">
-                    <strong>Admin:</strong> admin@amigosecreto.com / admin123
-                  </p>
-                </div>
               </div>
             </CardContent>
           </Card>

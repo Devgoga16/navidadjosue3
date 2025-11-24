@@ -34,7 +34,7 @@ export default function NotFound() {
           {user && (
             <Button
               onClick={() =>
-                navigate(user.role === "admin" ? "/admin" : "/participant")
+                navigate(user.esAdmin ? "/admin" : "/participant")
               }
               variant="outline"
               size="lg"

@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
+import { API_ENDPOINTS } from "@/lib/api";
+import type { MiAmigoSecretoResponse } from "@shared/api";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
@@ -14,6 +16,12 @@ interface CountdownState {
   seconds: number;
 }
 
+interface AmigoSecreto {
+  _id: string;
+  nombreCompleto: string;
+  numeroTelefono: string;
+}
+
 export default function ParticipantDashboard() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
@@ -23,21 +31,21 @@ export default function ParticipantDashboard() {
     minutes: 0,
     seconds: 0,
   });
-  const [hasAssignment, setHasAssignment] = useState<string | null>(null);
+  const [amigoSecreto, setAmigoSecreto] = useState<AmigoSecreto | null>(null);
   const [isLoadingAssignment, setIsLoadingAssignment] = useState(false);
-  const [showAssignment, setShowAssignment] = useState(false);
+  const [sorteoRealizado, setSorteoRealizado] = useState(false);
 
   const verse = getVerseByTheme("love");
 
   useEffect(() => {
-    if (user?.role !== "participant") {
-      navigate("/");
+    if (user?.esAdmin) {
+      navigate("/admin");
     }
 
     // Update countdown every second
     const updateCountdown = () => {
-      // December 5, 2025 at 00:00:00
-      const drawDate = new Date("2025-12-05T00:00:00").getTime();
+      // Get draw date from environment variable
+      const drawDate = new Date(import.meta.env.VITE_DRAW_DATE || "2025-12-05T00:00:00").getTime();
       const now = new Date().getTime();
       const diff = drawDate - now;
 
@@ -65,20 +73,25 @@ export default function ParticipantDashboard() {
   }, [user, navigate]);
 
   const fetchAssignment = async () => {
-    if (!user) return;
+    if (!user?._id) return;
     setIsLoadingAssignment(true);
     try {
-      const response = await fetch("/api/my-assignment", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId: user.id }),
+      const response = await fetch(API_ENDPOINTS.MI_AMIGO_SECRETO(user._id), {
+        method: "GET",
+        headers: { "accept": "application/json" },
       });
-      const data = await response.json();
-      if (data.assigned) {
-        setHasAssignment(data.assigned);
-        setShowAssignment(true);
+      const data: MiAmigoSecretoResponse = await response.json();
+      
+      if (data.success && data.data) {
+        setAmigoSecreto(data.data.amigoSecreto);
+        setSorteoRealizado(true);
+      } else {
+        // Sorteo no realizado todavía
+        setAmigoSecreto(null);
+        setSorteoRealizado(false);
       }
-    } catch {
+    } catch (error) {
+      console.error("Error al obtener amigo secreto:", error);
       // Silently fail - assignment might not be available yet
     } finally {
       setIsLoadingAssignment(false);
@@ -107,15 +120,15 @@ export default function ParticipantDashboard() {
               Familia Josué
             </h1>
             <p className="text-blue-200 font-semibold text-sm mt-0.5">
-              Panel de Participante
+              Participante
             </p>
           </div>
           <div className="flex items-center gap-3">
             <div className="text-right">
               <p className="font-semibold text-blue-200 text-sm">
-                {user?.name}
+                {user?.nombreCompleto}
               </p>
-              <p className="text-xs text-blue-300">{user?.email}</p>
+              <p className="text-xs text-blue-300">{user?.numeroTelefono}</p>
             </div>
             <Button
               onClick={handleLogout}
@@ -140,7 +153,7 @@ export default function ParticipantDashboard() {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 py-3 md:px-6 md:py-6">
         {/* Assignment Card */}
-        {showAssignment && hasAssignment ? (
+        {sorteoRealizado && amigoSecreto ? (
           <Card className="border-2 border-orange-500/40 shadow-lg mb-4 md:mb-6 bg-slate-800/70 backdrop-blur-sm">
             <CardHeader className="border-b border-orange-500/20 pb-2">
               <CardTitle className="text-orange-300 flex items-center gap-2 text-sm md:text-base">
@@ -151,7 +164,7 @@ export default function ParticipantDashboard() {
             <CardContent className="pt-3 md:pt-6">
               <div className="text-center py-4 md:py-8">
                 <p className="text-blue-200 mb-3 md:mb-4 font-semibold text-sm">
-                  Debes comprar un regalo para:
+                  Tu amigo(a) secreto es:
                 </p>
                 <div className="bg-slate-700/50 rounded-lg shadow-md p-4 md:p-8 inline-block border-2 border-blue-500/30 backdrop-blur-sm">
                   <User
@@ -159,12 +172,14 @@ export default function ParticipantDashboard() {
                     className="mx-auto text-orange-400 mb-2 md:mb-4"
                   />
                   <p className="text-2xl md:text-4xl font-bold bg-gradient-to-r from-orange-300 to-orange-400 bg-clip-text text-transparent">
-                    {hasAssignment}
+                    {amigoSecreto.nombreCompleto}
+                  </p>
+                  <p className="text-blue-300 mt-2 text-sm">
+                    {amigoSecreto.numeroTelefono}
                   </p>
                 </div>
                 <p className="text-blue-200 mt-4 md:mt-6 text-xs md:text-sm max-w-md mx-auto font-medium">
-                  El sorteo ha sido realizado. Tienes asignado a {hasAssignment}
-                  . ¡Prepara un regalo especial con mucho amor!
+                  El sorteo ha sido realizado. Tienes asignado a {amigoSecreto.nombreCompleto}. ¡Prepara un regalo especial!
                 </p>
               </div>
             </CardContent>
@@ -270,9 +285,9 @@ export default function ParticipantDashboard() {
                       </div>
                       <div className="bg-slate-700/70 rounded-lg p-3 md:p-6 shadow-md inline-block border-2 border-blue-500/30 backdrop-blur-sm">
                         <p className="text-blue-200 font-medium text-xs md:text-sm">
-                          Fecha del evento:{" "}
+                          Fecha del sorteo:{" "}
                           <strong className="text-blue-100">
-                            5 de Diciembre de 2025
+                            Viernes 28 de Noviembre de 2025
                           </strong>
                         </p>
                       </div>
@@ -315,9 +330,9 @@ export default function ParticipantDashboard() {
                         ¿Cuándo se realiza el sorteo?
                       </h3>
                       <p className="text-blue-300/70 text-xs md:text-sm mt-1">
-                        El sorteo se realizará el 5 de diciembre de 2025. Una
-                        vez realizado, podrás ver a quién le debes comprar el
-                        regalo.
+                        El sorteo se realizará el 28 de noviembre de 2025 en 
+                        nuestra reunion del grupo familiar. Una vez realizado, 
+                        podrás ver a quién le debes comprar el regalo.
                       </p>
                     </div>
                   </div>

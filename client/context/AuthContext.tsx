@@ -4,6 +4,7 @@ import type { User } from "@shared/api";
 interface AuthContextType {
   user: User | null;
   isLoading: boolean;
+  isAdmin: boolean;
   login: (user: User) => void;
   logout: () => void;
   setUser: (user: User | null) => void;
@@ -40,8 +41,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     localStorage.removeItem("user");
   };
 
+  const isAdmin = user?.esAdmin ?? false;
+
   return (
-    <AuthContext.Provider value={{ user, isLoading, login, logout, setUser }}>
+    <AuthContext.Provider value={{ user, isLoading, isAdmin, login, logout, setUser }}>
       {children}
     </AuthContext.Provider>
   );

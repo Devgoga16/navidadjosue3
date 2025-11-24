@@ -58,7 +58,7 @@ const AppRoutes = () => {
         path="/"
         element={
           user ? (
-            <Navigate to={user.role === "admin" ? "/admin" : "/participant"} />
+            <Navigate to={user.esAdmin ? "/admin" : "/participant"} />
           ) : (
             <Auth />
           )
@@ -69,7 +69,7 @@ const AppRoutes = () => {
       <Route
         path="/admin"
         element={
-          <ProtectedRoute allowedRoles={["admin"]}>
+          <ProtectedRoute requireAdmin={true}>
             <AdminDashboard />
           </ProtectedRoute>
         }
@@ -79,7 +79,7 @@ const AppRoutes = () => {
       <Route
         path="/participant"
         element={
-          <ProtectedRoute allowedRoles={["participant"]}>
+          <ProtectedRoute requireAdmin={false}>
             <ParticipantDashboard />
           </ProtectedRoute>
         }

@@ -1,9 +1,20 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
+import { API_ENDPOINTS } from "@/lib/api";
 import type { Participant, DrawResult } from "@shared/api";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
 import { LogOut, Users, Play } from "lucide-react";
 import BibleVerse, { getVerseByTheme } from "@/components/BibleVerse";
@@ -15,11 +26,13 @@ export default function AdminDashboard() {
   const [isLoading, setIsLoading] = useState(false);
   const [hasDrawn, setHasDrawn] = useState(false);
   const [drawResults, setDrawResults] = useState<DrawResult[]>([]);
+  const [showDrawDialog, setShowDrawDialog] = useState(false);
+  const [showResetDialog, setShowResetDialog] = useState(false);
 
   const verse = getVerseByTheme("harmony");
 
   useEffect(() => {
-    if (user?.role !== "admin") {
+    if (!user?.esAdmin) {
       navigate("/");
     }
     fetchParticipants();
@@ -31,9 +44,14 @@ export default function AdminDashboard() {
 
   const fetchParticipants = async () => {
     try {
-      const response = await fetch("/api/participants");
-      const data = await response.json();
-      setParticipants(data.participants || []);
+      const response = await fetch(API_ENDPOINTS.PARTICIPANTES);
+      const result = await response.json();
+      setParticipants(result.data || []);
+      
+      // Actualizar estado del sorteo si existe
+      if (result.sorteo && result.sorteo.estado === "completado") {
+        setHasDrawn(true);
+      }
     } catch {
       toast.error("Error al cargar participantes");
     }
@@ -45,27 +63,63 @@ export default function AdminDashboard() {
       return;
     }
 
-    if (
-      !window.confirm(
-        "¿Estás seguro? Esta acción no se puede deshacer. Se notificará a los participantes.",
-      )
-    ) {
-      return;
-    }
+    setShowDrawDialog(true);
+  };
 
+  const confirmDraw = async () => {
+    setShowDrawDialog(false);
     setIsLoading(true);
     try {
-      const response = await fetch("/api/draw", { method: "POST" });
-      const data = await response.json();
+      const response = await fetch(API_ENDPOINTS.SORTEO, { 
+        method: "POST",
+        headers: {
+          "accept": "application/json"
+        }
+      });
+      const result = await response.json();
 
-      if (data.success) {
+      if (result.success) {
         setHasDrawn(true);
-        setDrawResults(data.results || []);
-        toast.success("¡Sorteo realizado exitosamente!");
+        setDrawResults(result.data || []);
+        toast.success(result.message || "¡Sorteo realizado exitosamente!");
       } else {
-        toast.error(data.message || "Error al realizar el sorteo");
+        toast.error(result.error || result.message || "Error al realizar el sorteo");
       }
-    } catch {
+    } catch (error) {
+      console.error("Error al realizar sorteo:", error);
+      toast.error("Error de conexión");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleResetDraw = async () => {
+    setShowResetDialog(true);
+  };
+
+  const confirmResetDraw = async () => {
+    setShowResetDialog(false);
+    setIsLoading(true);
+    try {
+      const response = await fetch(API_ENDPOINTS.SORTEO_RESET, { 
+        method: "DELETE",
+        headers: {
+          "accept": "application/json"
+        }
+      });
+      const result = await response.json();
+
+      if (result.success) {
+        setHasDrawn(false);
+        setDrawResults([]);
+        toast.success(result.message || "¡Sorteo reseteado exitosamente!");
+        // Refrescar participantes
+        fetchParticipants();
+      } else {
+        toast.error(result.error || result.message || "Error al resetear el sorteo");
+      }
+    } catch (error) {
+      console.error("Error al resetear sorteo:", error);
       toast.error("Error de conexión");
     } finally {
       setIsLoading(false);
@@ -94,9 +148,9 @@ export default function AdminDashboard() {
           <div className="flex items-center gap-3">
             <div className="text-right">
               <p className="font-semibold text-blue-200 text-sm">
-                {user?.name}
+                {user?.nombreCompleto}
               </p>
-              <p className="text-xs text-blue-300">{user?.email}</p>
+              <p className="text-xs text-blue-300">{user?.numeroTelefono}</p>
             </div>
             <Button
               onClick={handleLogout}
@@ -143,31 +197,49 @@ export default function AdminDashboard() {
                 Estado del Sorteo
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              <div
-                className={`text-2xl md:text-3xl font-bold ${
-                  hasDrawn ? "text-green-400" : "text-blue-300"
-                }`}
-              >
-                {hasDrawn ? "Completado" : "Pendiente"}
+            <CardContent className="space-y-3">
+              <div>
+                <div
+                  className={`text-2xl md:text-3xl font-bold ${
+                    hasDrawn ? "text-green-400" : "text-blue-300"
+                  }`}
+                >
+                  {hasDrawn ? "Completado" : "Pendiente"}
+                </div>
+                <p className="text-xs text-blue-300/70 mt-1">
+                  {hasDrawn ? "Realizado" : "En espera"}
+                </p>
               </div>
-              <p className="text-xs text-blue-300/70 mt-1">
-                {hasDrawn ? "Realizado" : "En espera"}
-              </p>
+              {hasDrawn && (
+                <Button
+                  onClick={handleResetDraw}
+                  disabled={isLoading}
+                  variant="outline"
+                  size="sm"
+                  className="w-full text-red-400 border-red-500/50 hover:bg-red-900/50 hover:text-red-300"
+                >
+                  {isLoading ? "Procesando..." : "Resetear Sorteo"}
+                </Button>
+              )}
             </CardContent>
           </Card>
 
           <Card className="border-2 border-blue-500/40 shadow-lg bg-slate-800/70 backdrop-blur-sm">
             <CardHeader className="pb-2 border-b border-blue-500/20">
               <CardTitle className="text-xs md:text-sm font-medium text-blue-200">
-                Fecha del Evento
+                Fecha del Sorteo
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl md:text-3xl font-bold text-blue-300">
-                5 Dic
+                {new Date(import.meta.env.VITE_DRAW_DATE).toLocaleDateString("es-ES", { 
+                  day: "numeric", 
+                  month: "short" 
+                })}
               </div>
-              <p className="text-xs text-blue-300/70 mt-1">2025</p>
+              <p className="text-xs text-blue-300/70 mt-1">
+                {new Date(import.meta.env.VITE_DRAW_DATE).getFullYear()}
+              </p>
             </CardContent>
           </Card>
         </div>
@@ -209,24 +281,22 @@ export default function AdminDashboard() {
             </CardHeader>
             <CardContent>
               <p className="text-blue-200 text-xs md:text-sm mb-3">
-                El sorteo ha sido realizado. Los participantes pueden ver sus
-                asignaciones.
+                El sorteo ha sido realizado exitosamente. {drawResults.length} participantes tienen asignado su amigo secreto.
               </p>
               <div className="space-y-1 text-xs md:text-sm text-blue-300">
-                {drawResults.slice(0, 5).map((result) => (
-                  <div key={result.participantId} className="flex gap-2">
-                    <span className="font-medium">→</span>
+                {drawResults.map((result) => (
+                  <div key={result.participante} className="flex gap-2 items-center">
+                    <span className="font-medium">✓</span>
                     <span>
-                      Un participante debe regalar a{" "}
-                      <strong>{result.assignedTo}</strong>
+                      <strong>{result.nombreParticipante}</strong>
+                      {result.tieneAmigoSecreto ? (
+                        <span className="text-green-400 ml-2">tiene amigo secreto asignado</span>
+                      ) : (
+                        <span className="text-red-400 ml-2">sin asignación</span>
+                      )}
                     </span>
                   </div>
                 ))}
-                {drawResults.length > 5 && (
-                  <p className="text-blue-300/70 pt-2">
-                    ... y {drawResults.length - 5} más
-                  </p>
-                )}
               </div>
             </CardContent>
           </Card>
@@ -259,10 +329,10 @@ export default function AdminDashboard() {
                         Nombre
                       </th>
                       <th className="px-2 md:px-4 py-2 md:py-3 text-left text-xs md:text-sm font-semibold text-blue-200">
-                        Correo
+                        Teléfono
                       </th>
                       <th className="px-2 md:px-4 py-2 md:py-3 text-left text-xs md:text-sm font-semibold text-blue-200">
-                        Teléfono
+                        Estado
                       </th>
                       <th className="px-2 md:px-4 py-2 md:py-3 text-left text-xs md:text-sm font-semibold text-blue-200">
                         Fecha de Registro
@@ -272,17 +342,23 @@ export default function AdminDashboard() {
                   <tbody>
                     {participants.map((participant) => (
                       <tr
-                        key={participant.id}
+                        key={participant._id}
                         className="border-b border-blue-500/10 hover:bg-blue-900/30 transition-colors"
                       >
                         <td className="px-2 md:px-4 py-2 md:py-3 text-xs md:text-sm text-blue-200 font-medium">
-                          {participant.name}
+                          {participant.nombreCompleto}
                         </td>
                         <td className="px-2 md:px-4 py-2 md:py-3 text-xs md:text-sm text-blue-300">
-                          {participant.email}
+                          {participant.numeroTelefono}
                         </td>
-                        <td className="px-2 md:px-4 py-2 md:py-3 text-xs md:text-sm text-blue-300">
-                          {participant.phone}
+                        <td className="px-2 md:px-4 py-2 md:py-3 text-xs md:text-sm">
+                          <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                            participant.activo 
+                              ? "bg-green-900/30 text-green-400 border border-green-500/30" 
+                              : "bg-red-900/30 text-red-400 border border-red-500/30"
+                          }`}>
+                            {participant.activo ? "Activo" : "Inactivo"}
+                          </span>
                         </td>
                         <td className="px-2 md:px-4 py-2 md:py-3 text-xs md:text-sm text-blue-300/70">
                           {new Date(participant.createdAt).toLocaleDateString(
@@ -305,6 +381,56 @@ export default function AdminDashboard() {
           </CardContent>
         </Card>
       </main>
+
+      {/* Sorteo Dialog */}
+      <AlertDialog open={showDrawDialog} onOpenChange={setShowDrawDialog}>
+        <AlertDialogContent className="bg-slate-800 border-blue-500/50">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-blue-200">
+              ¿Ejecutar Sorteo?
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-blue-300/80">
+              Esta acción no se puede deshacer. Se asignará un amigo secreto a cada participante de forma aleatoria.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="bg-slate-700 text-blue-200 border-blue-500/50 hover:bg-slate-600">
+              Cancelar
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={confirmDraw}
+              className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white"
+            >
+              Sí, ejecutar sorteo
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Reset Dialog */}
+      <AlertDialog open={showResetDialog} onOpenChange={setShowResetDialog}>
+        <AlertDialogContent className="bg-slate-800 border-red-500/50">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-red-400">
+              ¿Resetear Sorteo?
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-blue-300/80">
+              Esta acción eliminará todas las asignaciones de amigo secreto. Los participantes seguirán registrados, pero deberás ejecutar el sorteo nuevamente.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="bg-slate-700 text-blue-200 border-blue-500/50 hover:bg-slate-600">
+              Cancelar
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={confirmResetDraw}
+              className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white"
+            >
+              Sí, resetear sorteo
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
