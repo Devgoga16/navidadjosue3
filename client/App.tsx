@@ -98,7 +98,10 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <AppRoutes />
+          <MosaicBackground />
+          <div className="relative z-10 min-h-screen">
+            <AppRoutes />
+          </div>
         </BrowserRouter>
       </TooltipProvider>
     </AuthProvider>
