@@ -108,11 +108,11 @@ export default function Auth() {
       {/* Content Container */}
       <div className="w-full max-w-md">
         {/* Header with group name */}
-        <div className="text-center mb-8">
-          <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-400 via-blue-300 to-cyan-400 bg-clip-text text-transparent mb-2">
+        <div className="text-center mb-6">
+          <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-400 via-blue-300 to-cyan-400 bg-clip-text text-transparent mb-1">
             Familia Josué
           </h1>
-          <p className="text-blue-200 font-semibold text-lg mb-4">
+          <p className="text-blue-200 font-semibold text-sm md:text-base mb-3">
             Sistema de Sorteo - Amigo Secreto
           </p>
           <BibleVerse
@@ -319,11 +319,11 @@ export default function Auth() {
         </div>
 
         {/* Footer with verse */}
-        <div className="mt-12 text-center">
-          <p className="text-xs text-blue-300 mb-2">
+        <div className="mt-6 md:mt-8 text-center">
+          <p className="text-xs text-blue-300 mb-1">
             Bendiciones para "Familia Josué"
           </p>
-          <p className="text-sm italic text-blue-200">
+          <p className="text-xs md:text-sm italic text-blue-200">
             "Que la paz de Cristo reine en vuestros corazones, a la cual
             asimismo fuisteis llamados en un solo cuerpo."
           </p>
