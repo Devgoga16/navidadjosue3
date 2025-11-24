@@ -79,7 +79,7 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950/80 backdrop-blur-sm">
+    <div className="min-h-screen bg-transparent">
       {/* Header */}
       <header className="bg-gradient-to-r from-blue-900/80 to-slate-900/80 shadow-lg border-b-4 border-blue-500/50 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
