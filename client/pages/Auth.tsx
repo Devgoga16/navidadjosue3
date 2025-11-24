@@ -127,7 +127,7 @@ export default function Auth() {
               {!isLogin && (
                 <>
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-red-900">
+                    <label className="text-sm font-medium text-emerald-900">
                       Nombre Completo
                     </label>
                     <Input
@@ -141,7 +141,7 @@ export default function Auth() {
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-red-900">
+                    <label className="text-sm font-medium text-emerald-900">
                       Teléfono
                     </label>
                     <Input
@@ -155,7 +155,7 @@ export default function Auth() {
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-red-900">
+                    <label className="text-sm font-medium text-emerald-900">
                       Tipo de Cuenta
                     </label>
                     <div className="flex gap-4">
@@ -167,9 +167,9 @@ export default function Auth() {
                           onChange={(e) =>
                             setRole(e.target.value as UserRole)
                           }
-                          className="mr-2 accent-red-700"
+                          className="mr-2 accent-emerald-700"
                         />
-                        <span className="text-sm text-red-800">Participante</span>
+                        <span className="text-sm text-emerald-800">Participante</span>
                       </label>
                       <label className="flex items-center cursor-pointer">
                         <input
@@ -179,9 +179,9 @@ export default function Auth() {
                           onChange={(e) =>
                             setRole(e.target.value as UserRole)
                           }
-                          className="mr-2 accent-red-700"
+                          className="mr-2 accent-emerald-700"
                         />
-                        <span className="text-sm text-red-800">Administrador</span>
+                        <span className="text-sm text-emerald-800">Administrador</span>
                       </label>
                     </div>
                   </div>
@@ -189,7 +189,7 @@ export default function Auth() {
               )}
 
               <div className="space-y-2">
-                <label className="text-sm font-medium text-red-900">
+                <label className="text-sm font-medium text-emerald-900">
                   Correo Electrónico
                 </label>
                 <Input
@@ -203,7 +203,7 @@ export default function Auth() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium text-red-900">
+                <label className="text-sm font-medium text-emerald-900">
                   Contraseña
                 </label>
                 <Input
@@ -219,7 +219,7 @@ export default function Auth() {
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-gradient-to-r from-amber-700 to-red-700 hover:from-amber-800 hover:to-red-800 text-white font-semibold py-2 rounded-lg transition-all"
+                className="w-full bg-gradient-to-r from-emerald-700 to-green-700 hover:from-emerald-800 hover:to-green-800 text-white font-semibold py-2 rounded-lg transition-all"
               >
                 {isLoading
                   ? "Procesando..."
@@ -236,7 +236,7 @@ export default function Auth() {
                   setIsLogin(!isLogin);
                   setFormData({ email: "", password: "", name: "", phone: "" });
                 }}
-                className="w-full text-center text-sm text-red-700 hover:text-red-900 font-medium"
+                className="w-full text-center text-sm text-emerald-700 hover:text-emerald-900 font-medium"
               >
                 {isLogin
                   ? "¿No tienes cuenta? Regístrate aquí"
@@ -244,12 +244,12 @@ export default function Auth() {
               </button>
             </div>
 
-            <div className="mt-6 pt-6 border-t border-amber-200">
-              <p className="text-xs text-red-700 text-center mb-4 font-semibold">
+            <div className="mt-6 pt-6 border-t border-green-200">
+              <p className="text-xs text-emerald-700 text-center mb-4 font-semibold">
                 Cuenta de prueba:
               </p>
-              <div className="bg-amber-50 p-3 rounded-lg space-y-1 text-xs border border-amber-200">
-                <p className="text-red-800">
+              <div className="bg-green-50 p-3 rounded-lg space-y-1 text-xs border border-green-200">
+                <p className="text-emerald-800">
                   <strong>Admin:</strong> admin@amigosecreto.com / admin123
                 </p>
               </div>
@@ -260,11 +260,11 @@ export default function Auth() {
 
       {/* Footer with verse */}
       <div className="mt-12 text-center max-w-2xl">
-        <p className="text-xs text-red-700 mb-2">Bendiciones para "Familia Josué"</p>
-        <p className="text-sm italic text-red-600">
+        <p className="text-xs text-emerald-700 mb-2">Bendiciones para "Familia Josué"</p>
+        <p className="text-sm italic text-emerald-600">
           "Que la paz de Cristo reine en vuestros corazones, a la cual asimismo fuisteis llamados en un solo cuerpo."
         </p>
-        <p className="text-xs text-red-700 mt-1">Colosenses 3:15</p>
+        <p className="text-xs text-emerald-700 mt-1">Colosenses 3:15</p>
       </div>
     </div>
   );
