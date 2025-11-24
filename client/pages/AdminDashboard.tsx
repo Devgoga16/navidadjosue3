@@ -82,7 +82,7 @@ export default function AdminDashboard() {
     <div className="min-h-screen bg-transparent">
       {/* Header */}
       <header className="bg-gradient-to-r from-blue-900/80 to-slate-900/80 shadow-lg border-b-4 border-blue-500/50 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 py-4 md:px-6 md:py-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
             <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-300 to-cyan-300 bg-clip-text text-transparent">
               Familia Josué
@@ -107,7 +107,7 @@ export default function AdminDashboard() {
             </Button>
           </div>
         </div>
-        <div className="max-w-7xl mx-auto px-6 pb-4">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 pb-4">
           <BibleVerse
             verse={verse.verse}
             reference={verse.reference}
@@ -117,9 +117,9 @@ export default function AdminDashboard() {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-6 py-8">
+      <main className="max-w-7xl mx-auto px-4 py-4 md:px-6 md:py-8">
         {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-8">
           <Card className="border-2 border-blue-500/40 shadow-lg bg-slate-800/70 backdrop-blur-sm">
             <CardHeader className="pb-3 border-b border-blue-500/20">
               <CardTitle className="text-sm font-medium text-blue-200 flex items-center gap-2">
@@ -174,7 +174,7 @@ export default function AdminDashboard() {
 
         {/* Draw Button */}
         {!hasDrawn && (
-          <Card className="border-2 border-orange-500/40 shadow-lg mb-8 bg-slate-800/70 backdrop-blur-sm">
+          <Card className="border-2 border-orange-500/40 shadow-lg mb-6 md:mb-8 bg-slate-800/70 backdrop-blur-sm">
             <CardHeader className="border-b border-orange-500/20">
               <CardTitle className="text-blue-200">Realizar Sorteo</CardTitle>
             </CardHeader>
@@ -199,7 +199,7 @@ export default function AdminDashboard() {
 
         {/* Draw Results */}
         {hasDrawn && drawResults.length > 0 && (
-          <Card className="border-2 border-green-500/40 shadow-lg mb-8 bg-slate-800/70 backdrop-blur-sm">
+          <Card className="border-2 border-green-500/40 shadow-lg mb-6 md:mb-8 bg-slate-800/70 backdrop-blur-sm">
             <CardHeader className="border-b border-green-500/20">
               <CardTitle className="text-green-400">
                 ✓ Sorteo Completado
