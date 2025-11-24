@@ -47,7 +47,7 @@ export default function AdminDashboard() {
 
     if (
       !window.confirm(
-        "¿Estás seguro? Esta acción no se puede deshacer. Se notificará a los participantes."
+        "¿Estás seguro? Esta acción no se puede deshacer. Se notificará a los participantes.",
       )
     ) {
       return;
@@ -87,7 +87,9 @@ export default function AdminDashboard() {
             <h1 className="text-4xl font-bold bg-gradient-to-r from-emerald-700 to-green-700 bg-clip-text text-transparent">
               Familia Josué
             </h1>
-            <p className="text-emerald-700 font-semibold mt-1">Panel Administrador</p>
+            <p className="text-emerald-700 font-semibold mt-1">
+              Panel Administrador
+            </p>
           </div>
           <div className="flex items-center gap-4">
             <div className="text-right">
@@ -170,7 +172,9 @@ export default function AdminDashboard() {
         {!hasDrawn && (
           <Card className="border-2 border-green-300 shadow-lg mb-8 bg-gradient-to-r from-green-50 to-emerald-50">
             <CardHeader>
-              <CardTitle className="text-emerald-900">Realizar Sorteo</CardTitle>
+              <CardTitle className="text-emerald-900">
+                Realizar Sorteo
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-emerald-700 mb-4">
@@ -209,7 +213,8 @@ export default function AdminDashboard() {
                   <div key={result.participantId} className="flex gap-2">
                     <span className="font-medium">→</span>
                     <span>
-                      Un participante debe regalar a <strong>{result.assignedTo}</strong>
+                      Un participante debe regalar a{" "}
+                      <strong>{result.assignedTo}</strong>
                     </span>
                   </div>
                 ))}
@@ -226,7 +231,9 @@ export default function AdminDashboard() {
         {/* Participants Table */}
         <Card className="border-2 border-green-200 shadow-lg">
           <CardHeader className="bg-gradient-to-r from-green-50 to-emerald-50">
-            <CardTitle className="text-emerald-900">Participantes Registrados</CardTitle>
+            <CardTitle className="text-emerald-900">
+              Participantes Registrados
+            </CardTitle>
           </CardHeader>
           <CardContent>
             {participants.length === 0 ? (
@@ -282,7 +289,7 @@ export default function AdminDashboard() {
                               day: "2-digit",
                               hour: "2-digit",
                               minute: "2-digit",
-                            }
+                            },
                           )}
                         </td>
                       </tr>

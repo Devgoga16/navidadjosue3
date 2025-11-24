@@ -106,7 +106,9 @@ export default function ParticipantDashboard() {
             <h1 className="text-4xl font-bold bg-gradient-to-r from-emerald-700 to-green-700 bg-clip-text text-transparent">
               Familia Josué
             </h1>
-            <p className="text-emerald-700 font-semibold mt-1">Panel de Participante</p>
+            <p className="text-emerald-700 font-semibold mt-1">
+              Panel de Participante
+            </p>
           </div>
           <div className="flex items-center gap-4">
             <div className="text-right">
@@ -152,8 +154,8 @@ export default function ParticipantDashboard() {
                   </p>
                 </div>
                 <p className="text-emerald-700 mt-6 text-sm max-w-md mx-auto font-medium">
-                  El sorteo ha sido realizado. Tienes asignado a {hasAssignment}.
-                  ¡Prepara un regalo especial con mucho amor!
+                  El sorteo ha sido realizado. Tienes asignado a {hasAssignment}
+                  . ¡Prepara un regalo especial con mucho amor!
                 </p>
               </div>
             </CardContent>

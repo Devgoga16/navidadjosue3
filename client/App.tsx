@@ -53,7 +53,16 @@ const AppRoutes = () => {
   return (
     <Routes>
       {/* Public Routes */}
-      <Route path="/" element={user ? <Navigate to={user.role === "admin" ? "/admin" : "/participant"} /> : <Auth />} />
+      <Route
+        path="/"
+        element={
+          user ? (
+            <Navigate to={user.role === "admin" ? "/admin" : "/participant"} />
+          ) : (
+            <Auth />
+          )
+        }
+      />
 
       {/* Protected Routes - Admin */}
       <Route

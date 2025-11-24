@@ -42,7 +42,8 @@ export function createServer() {
   // Auth Routes
   app.post("/api/auth/register", (req: Request, res: Response) => {
     try {
-      const { name, email, phone, role, password } = req.body as RegisterRequest;
+      const { name, email, phone, role, password } =
+        req.body as RegisterRequest;
 
       if (!name || !email || !phone || !role || !password) {
         return res.json({

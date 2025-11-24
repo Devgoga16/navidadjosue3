@@ -22,7 +22,8 @@ export default function BibleVerse({
 // Colección de versículos para "Familia Josué"
 export const familiaJosueVerses = [
   {
-    verse: "¡Mira qué bueno y qué agradable es que los hermanos convivan en armonía!",
+    verse:
+      "¡Mira qué bueno y qué agradable es que los hermanos convivan en armonía!",
     reference: "Salmos 133:1",
     theme: "harmony",
   },
@@ -32,22 +33,26 @@ export const familiaJosueVerses = [
     theme: "love",
   },
   {
-    verse: "Un solo cuerpo, un solo Espíritu, así como fuisteis llamados en una misma esperanza de vuestra vocación.",
+    verse:
+      "Un solo cuerpo, un solo Espíritu, así como fuisteis llamados en una misma esperanza de vuestra vocación.",
     reference: "Efesios 4:4",
     theme: "unity",
   },
   {
-    verse: "No tengan miedo. Les anuncio una gran alegría, que es para todo el pueblo.",
+    verse:
+      "No tengan miedo. Les anuncio una gran alegría, que es para todo el pueblo.",
     reference: "Lucas 2:10",
     theme: "christmas",
   },
   {
-    verse: "Y sobre todo esto, vístanse de amor, que es lo que nos une perfectamente.",
+    verse:
+      "Y sobre todo esto, vístanse de amor, que es lo que nos une perfectamente.",
     reference: "Colosenses 3:14",
     theme: "love",
   },
   {
-    verse: "Celebren juntos con gozo porque el Señor los ha hecho de un mismo corazón y de una misma alma.",
+    verse:
+      "Celebren juntos con gozo porque el Señor los ha hecho de un mismo corazón y de una misma alma.",
     reference: "Filipenses 2:2",
     theme: "celebration",
   },
@@ -61,5 +66,7 @@ export function getVerseByTheme(theme: string) {
 }
 
 export function getRandomVerse() {
-  return familiaJosueVerses[Math.floor(Math.random() * familiaJosueVerses.length)];
+  return familiaJosueVerses[
+    Math.floor(Math.random() * familiaJosueVerses.length)
+  ];
 }

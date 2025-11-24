@@ -4,7 +4,13 @@ import { useAuth } from "@/context/AuthContext";
 import type { LoginRequest, RegisterRequest, UserRole } from "@shared/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { toast } from "sonner";
 import BibleVerse, { getVerseByTheme } from "@/components/BibleVerse";
 
@@ -102,7 +108,11 @@ export default function Auth() {
         <p className="text-emerald-800 font-semibold text-lg mb-4">
           Sistema de Sorteo - Amigo Secreto
         </p>
-        <BibleVerse verse={verse.verse} reference={verse.reference} className="max-w-2xl mx-auto" />
+        <BibleVerse
+          verse={verse.verse}
+          reference={verse.reference}
+          className="max-w-2xl mx-auto"
+        />
       </div>
 
       {/* Auth Card */}
@@ -164,24 +174,24 @@ export default function Auth() {
                           type="radio"
                           value="participant"
                           checked={role === "participant"}
-                          onChange={(e) =>
-                            setRole(e.target.value as UserRole)
-                          }
+                          onChange={(e) => setRole(e.target.value as UserRole)}
                           className="mr-2 accent-emerald-700"
                         />
-                        <span className="text-sm text-emerald-800">Participante</span>
+                        <span className="text-sm text-emerald-800">
+                          Participante
+                        </span>
                       </label>
                       <label className="flex items-center cursor-pointer">
                         <input
                           type="radio"
                           value="admin"
                           checked={role === "admin"}
-                          onChange={(e) =>
-                            setRole(e.target.value as UserRole)
-                          }
+                          onChange={(e) => setRole(e.target.value as UserRole)}
                           className="mr-2 accent-emerald-700"
                         />
-                        <span className="text-sm text-emerald-800">Administrador</span>
+                        <span className="text-sm text-emerald-800">
+                          Administrador
+                        </span>
                       </label>
                     </div>
                   </div>
@@ -260,9 +270,12 @@ export default function Auth() {
 
       {/* Footer with verse */}
       <div className="mt-12 text-center max-w-2xl">
-        <p className="text-xs text-emerald-700 mb-2">Bendiciones para "Familia Josué"</p>
+        <p className="text-xs text-emerald-700 mb-2">
+          Bendiciones para "Familia Josué"
+        </p>
         <p className="text-sm italic text-emerald-600">
-          "Que la paz de Cristo reine en vuestros corazones, a la cual asimismo fuisteis llamados en un solo cuerpo."
+          "Que la paz de Cristo reine en vuestros corazones, a la cual asimismo
+          fuisteis llamados en un solo cuerpo."
         </p>
         <p className="text-xs text-emerald-700 mt-1">Colosenses 3:15</p>
       </div>
