@@ -242,6 +242,7 @@ export default function Auth() {
                   onSubmit={isLogin ? handleLogin : handleRegister}
                   className="space-y-4"
                 >
+                  {/* REGISTRO - Campos de registro */}
                   {!isLogin && (
                     <>
                       <div className="space-y-1">
@@ -258,27 +259,40 @@ export default function Auth() {
                           className="bg-slate-800/50 border-blue-500/30 text-blue-50 placeholder-blue-400/50 focus:border-blue-400"
                         />
                       </div>
+                      <div className="space-y-1">
+                        <label className="text-xs md:text-sm font-medium text-blue-200">
+                          Número de Teléfono
+                        </label>
+                        <Input
+                          type="tel"
+                          name="phone"
+                          placeholder="987654321"
+                          value={formData.phone}
+                          onChange={handleInputChange}
+                          required
+                          className="bg-slate-800/50 border-blue-500/30 text-blue-50 placeholder-blue-400/50 focus:border-blue-400"
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <label className="text-xs md:text-sm font-medium text-blue-200">
+                          Contraseña
+                        </label>
+                        <Input
+                          type="password"
+                          name="password"
+                          placeholder="••••••••"
+                          value={formData.password}
+                          onChange={handleInputChange}
+                          required
+                          className="bg-slate-800/50 border-blue-500/30 text-blue-50 placeholder-blue-400/50 focus:border-blue-400"
+                        />
+                      </div>
                     </>
                   )}
 
-                  <div className="space-y-1">
-                    <label className="text-xs md:text-sm font-medium text-blue-200">
-                      Número de Teléfono
-                    </label>
-                    <Input
-                      type="tel"
-                      name="phone"
-                      placeholder="987654321"
-                      value={formData.phone}
-                      onChange={handleInputChange}
-                      required
-                      className="bg-slate-800/50 border-blue-500/30 text-blue-50 placeholder-blue-400/50 focus:border-blue-400"
-                    />
-                  </div>
-
+                  {/* LOGIN - Selector de método PRIMERO */}
                   {isLogin && (
-                    <div className="space-y-3">
-                      {/* Selector de método de autenticación */}
+                    <>
                       <div className="flex gap-2 p-1 bg-slate-800/50 rounded-lg border border-blue-500/30">
                         <button
                           type="button"
@@ -310,7 +324,23 @@ export default function Auth() {
                         </button>
                       </div>
 
-                      {/* Campo de contraseña */}
+                      {/* Número de teléfono para ambos métodos */}
+                      <div className="space-y-1">
+                        <label className="text-xs md:text-sm font-medium text-blue-200">
+                          Número de Teléfono
+                        </label>
+                        <Input
+                          type="tel"
+                          name="phone"
+                          placeholder="987654321"
+                          value={formData.phone}
+                          onChange={handleInputChange}
+                          required
+                          className="bg-slate-800/50 border-blue-500/30 text-blue-50 placeholder-blue-400/50 focus:border-blue-400"
+                        />
+                      </div>
+
+                      {/* MÉTODO 1: Contraseña */}
                       {!useAccessCode && (
                         <div className="space-y-1">
                           <label className="text-xs md:text-sm font-medium text-blue-200">
@@ -328,73 +358,82 @@ export default function Auth() {
                         </div>
                       )}
 
-                      {/* Campo de código de acceso */}
+                      {/* MÉTODO 2: Código WhatsApp */}
                       {useAccessCode && (
-                        <div className="space-y-2">
-                          <label className="text-xs md:text-sm font-medium text-blue-200">
-                            Código de Acceso
-                          </label>
-                          <div className="flex gap-2">
-                            <Input
-                              type="text"
-                              name="accessCode"
-                              placeholder="Ingresa el código"
-                              value={formData.accessCode}
-                              onChange={handleInputChange}
-                              required
-                              maxLength={6}
-                              className="bg-slate-800/50 border-blue-500/30 text-blue-50 placeholder-blue-400/50 focus:border-blue-400"
-                            />
-                            <Button
-                              type="button"
-                              onClick={handleSendAccessCode}
-                              disabled={isLoading || countdown > 0}
-                              className="bg-blue-600 hover:bg-blue-700 text-white whitespace-nowrap px-3 md:px-4"
-                            >
-                              {countdown > 0 
-                                ? `${Math.floor(countdown / 60)}:${(countdown % 60).toString().padStart(2, '0')}`
-                                : "Enviar"}
-                            </Button>
+                        <div className="space-y-3">
+                          {/* Instrucciones */}
+                          <div className="bg-blue-900/30 border border-blue-500/30 rounded-lg p-3">
+                            <p className="text-xs text-blue-200">
+                              <strong>Paso 1:</strong> Solicita tu código presionando "📱 Enviar Código"
+                            </p>
+                            <p className="text-xs text-blue-200 mt-1">
+                              <strong>Paso 2:</strong> Ingresa el código que recibiste por WhatsApp
+                            </p>
+                            <p className="text-xs text-blue-200 mt-1">
+                              <strong>Paso 3:</strong> Presiona "Iniciar Sesión con Código"
+                            </p>
                           </div>
+
+                          {/* Botón para solicitar código */}
+                          <Button
+                            type="button"
+                            onClick={handleSendAccessCode}
+                            disabled={isLoading || countdown > 0 || !formData.phone}
+                            className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold"
+                          >
+                            {countdown > 0 
+                              ? `Reenviar en ${Math.floor(countdown / 60)}:${(countdown % 60).toString().padStart(2, '0')}`
+                              : "📱 Enviar Código por WhatsApp"}
+                          </Button>
+
                           {codeSent && (
                             <div className="flex items-center gap-2 text-xs text-green-400 bg-green-950/30 border border-green-500/30 rounded-lg p-2">
                               <span>✓</span>
                               <span>Código enviado por WhatsApp exitosamente</span>
                             </div>
                           )}
+
+                          {/* Input para el código */}
+                          <div className="space-y-1">
+                            <label className="text-xs md:text-sm font-medium text-blue-200">
+                              Código de Acceso
+                            </label>
+                            <Input
+                              type="text"
+                              name="accessCode"
+                              placeholder="Ingresa el código de 6 dígitos"
+                              value={formData.accessCode}
+                              onChange={handleInputChange}
+                              required
+                              maxLength={6}
+                              disabled={!codeSent}
+                              className="bg-slate-800/50 border-blue-500/30 text-blue-50 placeholder-blue-400/50 focus:border-blue-400 disabled:opacity-50"
+                            />
+                          </div>
                         </div>
                       )}
-                    </div>
-                  )}
-
-                  {!isLogin && (
-                    <div className="space-y-1">
-                      <label className="text-xs md:text-sm font-medium text-blue-200">
-                        Contraseña
-                      </label>
-                      <Input
-                        type="password"
-                        name="password"
-                        placeholder="••••••••"
-                        value={formData.password}
-                        onChange={handleInputChange}
-                        required
-                        className="bg-slate-800/50 border-blue-500/30 text-blue-50 placeholder-blue-400/50 focus:border-blue-400"
-                      />
-                    </div>
+                    </>
                   )}
 
                   <Button
                     type="submit"
-                    disabled={isLoading}
-                    className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold py-2 rounded-lg transition-all"
+                    disabled={isLoading || (isLogin && useAccessCode && !codeSent)}
+                    className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold py-2 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isLoading
                       ? "Procesando..."
                       : isLogin
-                        ? "Iniciar Sesión"
+                        ? useAccessCode
+                          ? "Iniciar Sesión con Código"
+                          : "Iniciar Sesión con Contraseña"
                         : "Registrarse"}
                   </Button>
+                  
+                  {isLogin && useAccessCode && !codeSent && (
+                    <p className="text-xs text-center text-blue-300/70 -mt-2">
+                      Primero debes solicitar un código presionando "Enviar"
+                    </p>
+                  )}
                 </form>
               )}
 
