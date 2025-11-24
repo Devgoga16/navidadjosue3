@@ -99,8 +99,8 @@ export default function MosaicBackground() {
         ))}
       </div>
 
-      {/* Overlay for content legibility */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/50 to-black/40"></div>
+      {/* Overlay for content legibility - subtle */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/20 to-black/15"></div>
     </div>
   );
 }
