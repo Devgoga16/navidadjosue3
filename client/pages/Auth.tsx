@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
+import BibleVerse, { getVerseByTheme } from "@/components/BibleVerse";
 
 export default function Auth() {
   const [isLogin, setIsLogin] = useState(true);
@@ -13,6 +14,8 @@ export default function Auth() {
   const [role, setRole] = useState<UserRole>("participant");
   const navigate = useNavigate();
   const { login } = useAuth();
+
+  const verse = getVerseByTheme("christmas");
 
   const [formData, setFormData] = useState({
     email: "",
@@ -90,28 +93,33 @@ export default function Auth() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-cyan-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-cyan-600 bg-clip-text text-transparent mb-2">
-            Amigo Secreto
-          </h1>
-          <p className="text-gray-600">Sistema de Sorteo</p>
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-red-50 to-yellow-50 flex flex-col items-center justify-center p-4">
+      {/* Header with group name */}
+      <div className="text-center mb-8">
+        <h1 className="text-5xl font-bold bg-gradient-to-r from-amber-700 to-red-700 bg-clip-text text-transparent mb-2">
+          Familia Josué
+        </h1>
+        <p className="text-red-800 font-semibold text-lg mb-4">
+          Sistema de Sorteo - Amigo Secreto
+        </p>
+        <BibleVerse verse={verse.verse} reference={verse.reference} className="max-w-2xl mx-auto" />
+      </div>
 
-        <Card className="shadow-lg border-0">
-          <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl">
+      {/* Auth Card */}
+      <div className="w-full max-w-md">
+        <Card className="shadow-xl border-2 border-amber-200">
+          <CardHeader className="space-y-1 bg-gradient-to-r from-amber-50 to-red-50">
+            <CardTitle className="text-2xl text-amber-900">
               {isLogin ? "Iniciar Sesión" : "Registro"}
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-red-700">
               {isLogin
                 ? "Ingresa con tu cuenta para continuar"
                 : "Crea una nueva cuenta para participar"}
             </CardDescription>
           </CardHeader>
 
-          <CardContent>
+          <CardContent className="pt-6">
             <form
               onSubmit={isLogin ? handleLogin : handleRegister}
               className="space-y-4"
@@ -119,7 +127,7 @@ export default function Auth() {
               {!isLogin && (
                 <>
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-700">
+                    <label className="text-sm font-medium text-red-900">
                       Nombre Completo
                     </label>
                     <Input
@@ -133,7 +141,7 @@ export default function Auth() {
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-700">
+                    <label className="text-sm font-medium text-red-900">
                       Teléfono
                     </label>
                     <Input
@@ -147,7 +155,7 @@ export default function Auth() {
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-700">
+                    <label className="text-sm font-medium text-red-900">
                       Tipo de Cuenta
                     </label>
                     <div className="flex gap-4">
@@ -159,9 +167,9 @@ export default function Auth() {
                           onChange={(e) =>
                             setRole(e.target.value as UserRole)
                           }
-                          className="mr-2"
+                          className="mr-2 accent-red-700"
                         />
-                        <span className="text-sm">Participante</span>
+                        <span className="text-sm text-red-800">Participante</span>
                       </label>
                       <label className="flex items-center cursor-pointer">
                         <input
@@ -171,9 +179,9 @@ export default function Auth() {
                           onChange={(e) =>
                             setRole(e.target.value as UserRole)
                           }
-                          className="mr-2"
+                          className="mr-2 accent-red-700"
                         />
-                        <span className="text-sm">Administrador</span>
+                        <span className="text-sm text-red-800">Administrador</span>
                       </label>
                     </div>
                   </div>
@@ -181,7 +189,7 @@ export default function Auth() {
               )}
 
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700">
+                <label className="text-sm font-medium text-red-900">
                   Correo Electrónico
                 </label>
                 <Input
@@ -195,7 +203,7 @@ export default function Auth() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700">
+                <label className="text-sm font-medium text-red-900">
                   Contraseña
                 </label>
                 <Input
@@ -211,7 +219,7 @@ export default function Auth() {
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700 text-white font-semibold py-2 rounded-lg transition-all"
+                className="w-full bg-gradient-to-r from-amber-700 to-red-700 hover:from-amber-800 hover:to-red-800 text-white font-semibold py-2 rounded-lg transition-all"
               >
                 {isLoading
                   ? "Procesando..."
@@ -228,7 +236,7 @@ export default function Auth() {
                   setIsLogin(!isLogin);
                   setFormData({ email: "", password: "", name: "", phone: "" });
                 }}
-                className="w-full text-center text-sm text-gray-600 hover:text-gray-900 font-medium"
+                className="w-full text-center text-sm text-red-700 hover:text-red-900 font-medium"
               >
                 {isLogin
                   ? "¿No tienes cuenta? Regístrate aquí"
@@ -236,18 +244,27 @@ export default function Auth() {
               </button>
             </div>
 
-            <div className="mt-6 pt-6 border-t border-gray-200">
-              <p className="text-xs text-gray-500 text-center mb-4">
+            <div className="mt-6 pt-6 border-t border-amber-200">
+              <p className="text-xs text-red-700 text-center mb-4 font-semibold">
                 Cuenta de prueba:
               </p>
-              <div className="bg-gray-50 p-3 rounded-lg space-y-1 text-xs">
-                <p className="text-gray-700">
+              <div className="bg-amber-50 p-3 rounded-lg space-y-1 text-xs border border-amber-200">
+                <p className="text-red-800">
                   <strong>Admin:</strong> admin@amigosecreto.com / admin123
                 </p>
               </div>
             </div>
           </CardContent>
         </Card>
+      </div>
+
+      {/* Footer with verse */}
+      <div className="mt-12 text-center max-w-2xl">
+        <p className="text-xs text-red-700 mb-2">Bendiciones para "Familia Josué"</p>
+        <p className="text-sm italic text-red-600">
+          "Que la paz de Cristo reine en vuestros corazones, a la cual asimismo fuisteis llamados en un solo cuerpo."
+        </p>
+        <p className="text-xs text-red-700 mt-1">Colosenses 3:15</p>
       </div>
     </div>
   );
