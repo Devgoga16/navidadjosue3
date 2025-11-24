@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
@@ -98,28 +98,28 @@ export default function ParticipantDashboard() {
     countdown.seconds === 0;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-yellow-50 to-green-50">
+    <div className="min-h-screen bg-transparent">
       {/* Header */}
-      <header className="bg-gradient-to-r from-green-100 to-emerald-100 shadow-lg border-b-4 border-emerald-700">
+      <header className="bg-gradient-to-r from-blue-900/80 to-slate-900/80 shadow-lg border-b-4 border-blue-500/50 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
           <div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-emerald-700 to-green-700 bg-clip-text text-transparent">
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-300 to-cyan-300 bg-clip-text text-transparent">
               Familia Josué
             </h1>
-            <p className="text-emerald-700 font-semibold mt-1">
+            <p className="text-blue-200 font-semibold mt-1">
               Panel de Participante
             </p>
           </div>
           <div className="flex items-center gap-4">
             <div className="text-right">
-              <p className="font-semibold text-emerald-900">{user?.name}</p>
-              <p className="text-sm text-emerald-700">{user?.email}</p>
+              <p className="font-semibold text-blue-200">{user?.name}</p>
+              <p className="text-sm text-blue-300">{user?.email}</p>
             </div>
             <Button
               onClick={handleLogout}
               variant="outline"
               size="sm"
-              className="gap-2 text-emerald-700 border-emerald-300 hover:bg-emerald-50"
+              className="gap-2 text-blue-300 border-blue-500/50 hover:bg-blue-900/50"
             >
               <LogOut size={18} />
               Cerrar Sesión
@@ -127,7 +127,11 @@ export default function ParticipantDashboard() {
           </div>
         </div>
         <div className="max-w-7xl mx-auto px-6 pb-4">
-          <BibleVerse verse={verse.verse} reference={verse.reference} />
+          <BibleVerse
+            verse={verse.verse}
+            reference={verse.reference}
+            className="text-blue-100"
+          />
         </div>
       </header>
 
@@ -135,25 +139,25 @@ export default function ParticipantDashboard() {
       <main className="max-w-7xl mx-auto px-6 py-8">
         {/* Assignment Card */}
         {showAssignment && hasAssignment ? (
-          <Card className="border-2 border-yellow-300 shadow-lg mb-8 bg-gradient-to-r from-yellow-50 to-yellow-100">
-            <CardHeader className="bg-gradient-to-r from-yellow-100 to-yellow-200">
-              <CardTitle className="text-emerald-900 flex items-center gap-2">
-                <Gift size={24} className="text-emerald-700" />
+          <Card className="border-2 border-orange-500/40 shadow-lg mb-8 bg-slate-800/70 backdrop-blur-sm">
+            <CardHeader className="border-b border-orange-500/20">
+              <CardTitle className="text-orange-300 flex items-center gap-2">
+                <Gift size={24} className="text-orange-400" />
                 ¡Tu Asignación!
               </CardTitle>
             </CardHeader>
             <CardContent className="pt-6">
               <div className="text-center py-8">
-                <p className="text-emerald-700 mb-4 font-semibold">
+                <p className="text-blue-200 mb-4 font-semibold">
                   Debes comprar un regalo para:
                 </p>
-                <div className="bg-white rounded-lg shadow-md p-8 inline-block border-2 border-emerald-200">
-                  <User size={48} className="mx-auto text-emerald-300 mb-4" />
-                  <p className="text-4xl font-bold text-transparent bg-gradient-to-r from-emerald-700 to-green-700 bg-clip-text">
+                <div className="bg-slate-700/50 rounded-lg shadow-md p-8 inline-block border-2 border-blue-500/30 backdrop-blur-sm">
+                  <User size={48} className="mx-auto text-orange-400 mb-4" />
+                  <p className="text-4xl font-bold bg-gradient-to-r from-orange-300 to-orange-400 bg-clip-text text-transparent">
                     {hasAssignment}
                   </p>
                 </div>
-                <p className="text-emerald-700 mt-6 text-sm max-w-md mx-auto font-medium">
+                <p className="text-blue-200 mt-6 text-sm max-w-md mx-auto font-medium">
                   El sorteo ha sido realizado. Tienes asignado a {hasAssignment}
                   . ¡Prepara un regalo especial con mucho amor!
                 </p>
@@ -163,10 +167,10 @@ export default function ParticipantDashboard() {
         ) : (
           <>
             {/* Waiting Card */}
-            <Card className="border-2 border-green-300 shadow-lg mb-8 bg-gradient-to-r from-green-50 to-emerald-50">
-              <CardHeader className="bg-gradient-to-r from-green-100 to-emerald-100">
-                <CardTitle className="text-emerald-900 flex items-center gap-2">
-                  <Clock size={24} className="text-emerald-700" />
+            <Card className="border-2 border-blue-500/40 shadow-lg mb-8 bg-slate-800/70 backdrop-blur-sm">
+              <CardHeader className="border-b border-blue-500/20">
+                <CardTitle className="text-blue-200 flex items-center gap-2">
+                  <Clock size={24} className="text-blue-400" />
                   {drawDatePassed
                     ? "El Sorteo Ha Comenzado"
                     : "Contando los Días..."}
@@ -176,14 +180,14 @@ export default function ParticipantDashboard() {
                 <div className="text-center">
                   {drawDatePassed ? (
                     <div className="py-8">
-                      <p className="text-emerald-700 mb-6 font-medium">
+                      <p className="text-blue-200 mb-6 font-medium">
                         El sorteo ya se ha realizado. Tu asignación debería
                         estar disponible pronto.
                       </p>
                       <Button
                         onClick={fetchAssignment}
                         disabled={isLoadingAssignment}
-                        className="bg-gradient-to-r from-emerald-700 to-green-700 hover:from-emerald-800 hover:to-green-800 text-white font-semibold"
+                        className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold"
                       >
                         {isLoadingAssignment
                           ? "Cargando..."
@@ -192,47 +196,77 @@ export default function ParticipantDashboard() {
                     </div>
                   ) : (
                     <>
-                      <p className="text-emerald-700 mb-8 font-medium">
+                      <p className="text-blue-200 mb-12 font-medium text-lg">
                         Falta poco para el sorteo del evento
                       </p>
-                      <div className="grid grid-cols-4 gap-4 mb-8">
-                        <div className="bg-white rounded-lg p-6 shadow-md border-2 border-green-200">
-                          <div className="text-4xl font-bold text-emerald-700">
-                            {String(countdown.days).padStart(2, "0")}
+                      <div className="flex justify-center items-center gap-3 mb-8 flex-wrap">
+                        {/* Days */}
+                        <div className="flex flex-col items-center">
+                          <div className="bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl p-8 shadow-2xl border-2 border-blue-400/50 backdrop-blur-sm min-w-[120px]">
+                            <div className="text-6xl font-black bg-gradient-to-r from-blue-200 to-cyan-200 bg-clip-text text-transparent">
+                              {String(countdown.days).padStart(2, "0")}
+                            </div>
                           </div>
-                          <p className="text-sm text-emerald-700 mt-2 font-semibold">
+                          <p className="text-blue-300 font-bold mt-3 text-sm uppercase tracking-widest">
                             Días
                           </p>
                         </div>
-                        <div className="bg-white rounded-lg p-6 shadow-md border-2 border-green-200">
-                          <div className="text-4xl font-bold text-emerald-700">
-                            {String(countdown.hours).padStart(2, "0")}
+
+                        {/* Separator */}
+                        <div className="text-3xl text-blue-400/50 font-light self-start mt-6">
+                          :
+                        </div>
+
+                        {/* Hours */}
+                        <div className="flex flex-col items-center">
+                          <div className="bg-gradient-to-br from-cyan-600 to-cyan-800 rounded-xl p-8 shadow-2xl border-2 border-cyan-400/50 backdrop-blur-sm min-w-[120px]">
+                            <div className="text-6xl font-black bg-gradient-to-r from-cyan-200 to-blue-200 bg-clip-text text-transparent">
+                              {String(countdown.hours).padStart(2, "0")}
+                            </div>
                           </div>
-                          <p className="text-sm text-emerald-700 mt-2 font-semibold">
+                          <p className="text-cyan-300 font-bold mt-3 text-sm uppercase tracking-widest">
                             Horas
                           </p>
                         </div>
-                        <div className="bg-white rounded-lg p-6 shadow-md border-2 border-green-200">
-                          <div className="text-4xl font-bold text-emerald-700">
-                            {String(countdown.minutes).padStart(2, "0")}
+
+                        {/* Separator */}
+                        <div className="text-3xl text-cyan-400/50 font-light self-start mt-6">
+                          :
+                        </div>
+
+                        {/* Minutes */}
+                        <div className="flex flex-col items-center">
+                          <div className="bg-gradient-to-br from-purple-600 to-purple-800 rounded-xl p-8 shadow-2xl border-2 border-purple-400/50 backdrop-blur-sm min-w-[120px]">
+                            <div className="text-6xl font-black bg-gradient-to-r from-purple-200 to-pink-200 bg-clip-text text-transparent">
+                              {String(countdown.minutes).padStart(2, "0")}
+                            </div>
                           </div>
-                          <p className="text-sm text-emerald-700 mt-2 font-semibold">
+                          <p className="text-purple-300 font-bold mt-3 text-sm uppercase tracking-widest">
                             Minutos
                           </p>
                         </div>
-                        <div className="bg-white rounded-lg p-6 shadow-md border-2 border-green-200">
-                          <div className="text-4xl font-bold text-emerald-700">
-                            {String(countdown.seconds).padStart(2, "0")}
+
+                        {/* Separator */}
+                        <div className="text-3xl text-purple-400/50 font-light self-start mt-6">
+                          :
+                        </div>
+
+                        {/* Seconds */}
+                        <div className="flex flex-col items-center">
+                          <div className="bg-gradient-to-br from-orange-600 to-red-800 rounded-xl p-8 shadow-2xl border-2 border-orange-400/50 backdrop-blur-sm min-w-[120px]">
+                            <div className="text-6xl font-black bg-gradient-to-r from-orange-200 to-red-200 bg-clip-text text-transparent">
+                              {String(countdown.seconds).padStart(2, "0")}
+                            </div>
                           </div>
-                          <p className="text-sm text-emerald-700 mt-2 font-semibold">
+                          <p className="text-orange-300 font-bold mt-3 text-sm uppercase tracking-widest">
                             Segundos
                           </p>
                         </div>
                       </div>
-                      <div className="bg-white rounded-lg p-6 shadow-md inline-block border-2 border-green-200">
-                        <p className="text-emerald-700 font-medium">
+                      <div className="bg-slate-700/70 rounded-lg p-6 shadow-md inline-block border-2 border-blue-500/30 backdrop-blur-sm">
+                        <p className="text-blue-200 font-medium">
                           Fecha del evento:{" "}
-                          <strong className="text-emerald-900">
+                          <strong className="text-blue-100">
                             5 de Diciembre de 2025
                           </strong>
                         </p>
@@ -244,23 +278,23 @@ export default function ParticipantDashboard() {
             </Card>
 
             {/* Info Card */}
-            <Card className="border-2 border-green-200 shadow-lg">
-              <CardHeader className="bg-gradient-to-r from-green-50 to-emerald-50">
-                <CardTitle className="text-emerald-900">
+            <Card className="border-2 border-blue-500/40 shadow-lg bg-slate-800/70 backdrop-blur-sm">
+              <CardHeader className="border-b border-blue-500/20">
+                <CardTitle className="text-blue-200">
                   Información del Evento
                 </CardTitle>
               </CardHeader>
               <CardContent className="pt-6">
                 <div className="space-y-4">
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0 border-2 border-green-300">
-                      <Gift size={24} className="text-emerald-700" />
+                    <div className="w-12 h-12 bg-blue-900/70 rounded-lg flex items-center justify-center flex-shrink-0 border-2 border-blue-500/30">
+                      <Gift size={24} className="text-blue-400" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-emerald-900">
+                      <h3 className="font-semibold text-blue-200">
                         ¿Qué es Amigo Secreto?
                       </h3>
-                      <p className="text-emerald-700 text-sm mt-1">
+                      <p className="text-blue-300/70 text-sm mt-1">
                         Es un juego donde cada participante debe regalar algo a
                         la persona que le toque en el sorteo, de forma anónima o
                         sorpresa.
@@ -268,14 +302,14 @@ export default function ParticipantDashboard() {
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0 border-2 border-emerald-300">
-                      <Clock size={24} className="text-emerald-700" />
+                    <div className="w-12 h-12 bg-blue-900/70 rounded-lg flex items-center justify-center flex-shrink-0 border-2 border-blue-500/30">
+                      <Clock size={24} className="text-blue-400" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-emerald-900">
+                      <h3 className="font-semibold text-blue-200">
                         ¿Cuándo se realiza el sorteo?
                       </h3>
-                      <p className="text-emerald-700 text-sm mt-1">
+                      <p className="text-blue-300/70 text-sm mt-1">
                         El sorteo se realizará el 5 de diciembre de 2025. Una
                         vez realizado, podrás ver a quién le debes comprar el
                         regalo.
@@ -283,14 +317,14 @@ export default function ParticipantDashboard() {
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center flex-shrink-0 border-2 border-yellow-300">
-                      <User size={24} className="text-amber-700" />
+                    <div className="w-12 h-12 bg-blue-900/70 rounded-lg flex items-center justify-center flex-shrink-0 border-2 border-blue-500/30">
+                      <User size={24} className="text-blue-400" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-emerald-900">
+                      <h3 className="font-semibold text-blue-200">
                         ¿Cómo participo?
                       </h3>
-                      <p className="text-emerald-700 text-sm mt-1">
+                      <p className="text-blue-300/70 text-sm mt-1">
                         Ya estás registrado. Solo espera a que se realice el
                         sorteo y verás a quién te tocó en esta página.
                       </p>
@@ -302,16 +336,6 @@ export default function ParticipantDashboard() {
           </>
         )}
       </main>
-
-      {/* Footer */}
-      <footer className="bg-gradient-to-r from-emerald-700 to-green-700 text-white mt-12 py-6">
-        <div className="max-w-7xl mx-auto px-6 text-center">
-          <p className="text-sm mb-2">
-            "Amados, amémonos unos a otros, porque el amor viene de Dios."
-          </p>
-          <p className="text-xs opacity-90">1 Juan 4:7</p>
-        </div>
-      </footer>
     </div>
   );
 }

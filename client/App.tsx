@@ -9,6 +9,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import ParticipantDashboard from "./pages/ParticipantDashboard";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import NotFound from "./pages/NotFound";
+import MosaicBackground from "@/components/MosaicBackground";
 
 const queryClient = new QueryClient();
 
@@ -17,10 +18,10 @@ const AppRoutes = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 via-blue-50 to-cyan-50">
+      <div className="min-h-screen flex items-center justify-center bg-slate-950">
         <div className="text-center">
           <svg
-            className="animate-spin h-12 w-12 text-purple-600 mx-auto"
+            className="animate-spin h-12 w-12 text-blue-400 mx-auto"
             viewBox="0 0 50 50"
           >
             <circle
@@ -33,7 +34,7 @@ const AppRoutes = () => {
               fill="none"
             />
             <circle
-              className="text-purple-600"
+              className="text-blue-400"
               cx="25"
               cy="25"
               r="20"
@@ -44,7 +45,7 @@ const AppRoutes = () => {
               strokeDashoffset="75"
             />
           </svg>
-          <p className="text-gray-600 mt-4">Cargando...</p>
+          <p className="text-blue-200 mt-4">Cargando...</p>
         </div>
       </div>
     );
@@ -97,7 +98,10 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <AppRoutes />
+          <MosaicBackground />
+          <div className="relative z-10 min-h-screen">
+            <AppRoutes />
+          </div>
         </BrowserRouter>
       </TooltipProvider>
     </AuthProvider>

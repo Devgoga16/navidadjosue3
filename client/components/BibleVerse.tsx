@@ -11,10 +11,10 @@ export default function BibleVerse({
 }: BibleVerseProps) {
   return (
     <div
-      className={`text-center italic text-sm text-gray-600 py-3 px-4 bg-gradient-to-r from-amber-50 to-red-50 rounded-lg border border-amber-200 ${className}`}
+      className={`text-center italic text-sm py-3 px-4 bg-gradient-to-r from-blue-900/40 to-slate-900/40 rounded-lg border border-blue-500/20 backdrop-blur-sm ${className}`}
     >
-      <p className="mb-1 text-gray-700">"{verse}"</p>
-      <p className="text-xs font-semibold text-amber-800">— {reference}</p>
+      <p className="mb-1 text-blue-200">"{verse}"</p>
+      <p className="text-xs font-semibold text-blue-300/70">— {reference}</p>
     </div>
   );
 }

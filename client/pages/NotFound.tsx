@@ -7,16 +7,16 @@ export default function NotFound() {
   const { user } = useAuth();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-yellow-50 to-green-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
       <div className="text-center">
         <div className="mb-8">
-          <h1 className="text-7xl font-bold bg-gradient-to-r from-emerald-700 to-green-700 bg-clip-text text-transparent mb-2">
+          <h1 className="text-7xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent mb-2">
             404
           </h1>
-          <h2 className="text-2xl font-bold text-emerald-900 mb-2">
+          <h2 className="text-2xl font-bold text-blue-200 mb-2">
             Página no encontrada
           </h2>
-          <p className="text-emerald-700 mb-8 max-w-md mx-auto">
+          <p className="text-blue-300 mb-8 max-w-md mx-auto">
             La página que buscas no existe. Por favor, verifica la URL o regresa
             al inicio.
           </p>
@@ -25,7 +25,7 @@ export default function NotFound() {
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button
             onClick={() => navigate("/")}
-            className="bg-gradient-to-r from-emerald-700 to-green-700 hover:from-emerald-800 hover:to-green-800 text-white font-semibold"
+            className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold"
             size="lg"
           >
             Ir al Inicio
@@ -38,7 +38,7 @@ export default function NotFound() {
               }
               variant="outline"
               size="lg"
-              className="font-semibold text-emerald-700 border-emerald-300 hover:bg-emerald-50"
+              className="font-semibold text-blue-300 border-blue-400 hover:bg-blue-900/50"
             >
               Volver al Panel
             </Button>
