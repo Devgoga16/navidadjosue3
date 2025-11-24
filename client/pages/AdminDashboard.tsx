@@ -81,26 +81,26 @@ export default function AdminDashboard() {
   return (
     <div className="min-h-screen bg-slate-950/80 backdrop-blur-sm">
       {/* Header */}
-      <header className="bg-gradient-to-r from-green-100 to-emerald-100 shadow-lg border-b-4 border-emerald-700">
+      <header className="bg-gradient-to-r from-blue-900/80 to-slate-900/80 shadow-lg border-b-4 border-blue-500/50 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
           <div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-emerald-700 to-green-700 bg-clip-text text-transparent">
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-300 to-cyan-300 bg-clip-text text-transparent">
               Familia Josué
             </h1>
-            <p className="text-emerald-700 font-semibold mt-1">
+            <p className="text-blue-200 font-semibold mt-1">
               Panel Administrador
             </p>
           </div>
           <div className="flex items-center gap-4">
             <div className="text-right">
-              <p className="font-semibold text-emerald-900">{user?.name}</p>
-              <p className="text-sm text-emerald-700">{user?.email}</p>
+              <p className="font-semibold text-blue-200">{user?.name}</p>
+              <p className="text-sm text-blue-300">{user?.email}</p>
             </div>
             <Button
               onClick={handleLogout}
               variant="outline"
               size="sm"
-              className="gap-2 text-emerald-700 border-emerald-300 hover:bg-emerald-50"
+              className="gap-2 text-blue-300 border-blue-500/50 hover:bg-blue-900/50"
             >
               <LogOut size={18} />
               Cerrar Sesión
