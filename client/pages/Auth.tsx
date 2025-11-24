@@ -108,11 +108,11 @@ export default function Auth() {
       {/* Content Container */}
       <div className="w-full max-w-md">
         {/* Header with group name */}
-        <div className="text-center mb-6">
-          <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-400 via-blue-300 to-cyan-400 bg-clip-text text-transparent mb-1">
+        <div className="text-center mb-5">
+          <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-400 via-blue-300 to-cyan-400 bg-clip-text text-transparent mb-1">
             Familia Josué
           </h1>
-          <p className="text-blue-200 font-semibold text-sm md:text-base mb-3">
+          <p className="text-blue-200 font-semibold text-xs md:text-sm mb-3">
             Sistema de Sorteo - Amigo Secreto
           </p>
           <BibleVerse
@@ -126,10 +126,10 @@ export default function Auth() {
         <div className="w-full">
           <Card className="shadow-2xl border-2 border-blue-500/30 bg-slate-900/95 backdrop-blur-sm">
             <CardHeader className="space-y-1 bg-gradient-to-r from-blue-900/50 to-slate-900/50 border-b border-blue-500/20">
-              <CardTitle className="text-2xl bg-gradient-to-r from-blue-300 to-cyan-300 bg-clip-text text-transparent">
+              <CardTitle className="text-lg md:text-xl bg-gradient-to-r from-blue-300 to-cyan-300 bg-clip-text text-transparent">
                 {isLogin ? "Iniciar Sesión" : "Registro"}
               </CardTitle>
-              <CardDescription className="text-blue-200">
+              <CardDescription className="text-blue-200 text-xs md:text-sm">
                 {isLogin
                   ? "Ingresa con tu cuenta para continuar"
                   : "Crea una nueva cuenta para participar"}
@@ -172,8 +172,8 @@ export default function Auth() {
                 >
                   {!isLogin && (
                     <>
-                      <div className="space-y-2">
-                        <label className="text-sm font-medium text-blue-200">
+                      <div className="space-y-1">
+                        <label className="text-xs md:text-sm font-medium text-blue-200">
                           Nombre Completo
                         </label>
                         <Input
@@ -187,8 +187,8 @@ export default function Auth() {
                         />
                       </div>
 
-                      <div className="space-y-2">
-                        <label className="text-sm font-medium text-blue-200">
+                      <div className="space-y-1">
+                        <label className="text-xs md:text-sm font-medium text-blue-200">
                           Teléfono
                         </label>
                         <Input
@@ -202,11 +202,11 @@ export default function Auth() {
                         />
                       </div>
 
-                      <div className="space-y-2">
-                        <label className="text-sm font-medium text-blue-200">
+                      <div className="space-y-1">
+                        <label className="text-xs md:text-sm font-medium text-blue-200">
                           Tipo de Cuenta
                         </label>
-                        <div className="flex gap-4">
+                        <div className="flex gap-3">
                           <label className="flex items-center cursor-pointer">
                             <input
                               type="radio"
@@ -217,7 +217,7 @@ export default function Auth() {
                               }
                               className="mr-2 accent-blue-500"
                             />
-                            <span className="text-sm text-blue-200">
+                            <span className="text-xs md:text-sm text-blue-200">
                               Participante
                             </span>
                           </label>
@@ -231,7 +231,7 @@ export default function Auth() {
                               }
                               className="mr-2 accent-blue-500"
                             />
-                            <span className="text-sm text-blue-200">
+                            <span className="text-xs md:text-sm text-blue-200">
                               Administrador
                             </span>
                           </label>
@@ -240,8 +240,8 @@ export default function Auth() {
                     </>
                   )}
 
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-blue-200">
+                  <div className="space-y-1">
+                    <label className="text-xs md:text-sm font-medium text-blue-200">
                       Correo Electrónico
                     </label>
                     <Input
@@ -255,8 +255,8 @@ export default function Auth() {
                     />
                   </div>
 
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-blue-200">
+                  <div className="space-y-1">
+                    <label className="text-xs md:text-sm font-medium text-blue-200">
                       Contraseña
                     </label>
                     <Input
@@ -284,7 +284,7 @@ export default function Auth() {
                 </form>
               )}
 
-              <div className="mt-6">
+              <div className="mt-4">
                 <button
                   type="button"
                   onClick={() => {
@@ -296,7 +296,7 @@ export default function Auth() {
                       phone: "",
                     });
                   }}
-                  className="w-full text-center text-sm text-blue-300 hover:text-blue-200 font-medium transition-colors"
+                  className="w-full text-center text-xs md:text-sm text-blue-300 hover:text-blue-200 font-medium transition-colors"
                 >
                   {isLogin
                     ? "¿No tienes cuenta? Regístrate aquí"
@@ -304,11 +304,11 @@ export default function Auth() {
                 </button>
               </div>
 
-              <div className="mt-6 pt-6 border-t border-blue-500/20">
-                <p className="text-xs text-blue-300 text-center mb-4 font-semibold">
+              <div className="mt-4 pt-4 border-t border-blue-500/20">
+                <p className="text-xs text-blue-300 text-center mb-2 font-semibold">
                   Cuenta de prueba:
                 </p>
-                <div className="bg-blue-950/50 p-3 rounded-lg space-y-1 text-xs border border-blue-500/30">
+                <div className="bg-blue-950/50 p-2 rounded-lg space-y-0.5 text-xs border border-blue-500/30">
                   <p className="text-blue-200">
                     <strong>Admin:</strong> admin@amigosecreto.com / admin123
                   </p>
