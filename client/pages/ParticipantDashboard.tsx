@@ -192,39 +192,63 @@ export default function ParticipantDashboard() {
                     </div>
                   ) : (
                     <>
-                      <p className="text-blue-200 mb-8 font-medium">
+                      <p className="text-blue-200 mb-12 font-medium text-lg">
                         Falta poco para el sorteo del evento
                       </p>
-                      <div className="grid grid-cols-4 gap-4 mb-8">
-                        <div className="bg-slate-700/70 rounded-lg p-6 shadow-md border-2 border-blue-500/30 backdrop-blur-sm">
-                          <div className="text-4xl font-bold text-blue-300">
-                            {String(countdown.days).padStart(2, "0")}
+                      <div className="flex justify-center items-center gap-3 mb-8 flex-wrap">
+                        {/* Days */}
+                        <div className="flex flex-col items-center">
+                          <div className="bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl p-8 shadow-2xl border-2 border-blue-400/50 backdrop-blur-sm min-w-[120px]">
+                            <div className="text-6xl font-black bg-gradient-to-r from-blue-200 to-cyan-200 bg-clip-text text-transparent">
+                              {String(countdown.days).padStart(2, "0")}
+                            </div>
                           </div>
-                          <p className="text-sm text-blue-300/70 mt-2 font-semibold">
+                          <p className="text-blue-300 font-bold mt-3 text-sm uppercase tracking-widest">
                             Días
                           </p>
                         </div>
-                        <div className="bg-slate-700/70 rounded-lg p-6 shadow-md border-2 border-blue-500/30 backdrop-blur-sm">
-                          <div className="text-4xl font-bold text-blue-300">
-                            {String(countdown.hours).padStart(2, "0")}
+
+                        {/* Separator */}
+                        <div className="text-3xl text-blue-400/50 font-light self-start mt-6">:</div>
+
+                        {/* Hours */}
+                        <div className="flex flex-col items-center">
+                          <div className="bg-gradient-to-br from-cyan-600 to-cyan-800 rounded-xl p-8 shadow-2xl border-2 border-cyan-400/50 backdrop-blur-sm min-w-[120px]">
+                            <div className="text-6xl font-black bg-gradient-to-r from-cyan-200 to-blue-200 bg-clip-text text-transparent">
+                              {String(countdown.hours).padStart(2, "0")}
+                            </div>
                           </div>
-                          <p className="text-sm text-blue-300/70 mt-2 font-semibold">
+                          <p className="text-cyan-300 font-bold mt-3 text-sm uppercase tracking-widest">
                             Horas
                           </p>
                         </div>
-                        <div className="bg-slate-700/70 rounded-lg p-6 shadow-md border-2 border-blue-500/30 backdrop-blur-sm">
-                          <div className="text-4xl font-bold text-blue-300">
-                            {String(countdown.minutes).padStart(2, "0")}
+
+                        {/* Separator */}
+                        <div className="text-3xl text-cyan-400/50 font-light self-start mt-6">:</div>
+
+                        {/* Minutes */}
+                        <div className="flex flex-col items-center">
+                          <div className="bg-gradient-to-br from-purple-600 to-purple-800 rounded-xl p-8 shadow-2xl border-2 border-purple-400/50 backdrop-blur-sm min-w-[120px]">
+                            <div className="text-6xl font-black bg-gradient-to-r from-purple-200 to-pink-200 bg-clip-text text-transparent">
+                              {String(countdown.minutes).padStart(2, "0")}
+                            </div>
                           </div>
-                          <p className="text-sm text-blue-300/70 mt-2 font-semibold">
+                          <p className="text-purple-300 font-bold mt-3 text-sm uppercase tracking-widest">
                             Minutos
                           </p>
                         </div>
-                        <div className="bg-slate-700/70 rounded-lg p-6 shadow-md border-2 border-blue-500/30 backdrop-blur-sm">
-                          <div className="text-4xl font-bold text-blue-300">
-                            {String(countdown.seconds).padStart(2, "0")}
+
+                        {/* Separator */}
+                        <div className="text-3xl text-purple-400/50 font-light self-start mt-6">:</div>
+
+                        {/* Seconds */}
+                        <div className="flex flex-col items-center">
+                          <div className="bg-gradient-to-br from-orange-600 to-red-800 rounded-xl p-8 shadow-2xl border-2 border-orange-400/50 backdrop-blur-sm min-w-[120px]">
+                            <div className="text-6xl font-black bg-gradient-to-r from-orange-200 to-red-200 bg-clip-text text-transparent">
+                              {String(countdown.seconds).padStart(2, "0")}
+                            </div>
                           </div>
-                          <p className="text-sm text-blue-300/70 mt-2 font-semibold">
+                          <p className="text-orange-300 font-bold mt-3 text-sm uppercase tracking-widest">
                             Segundos
                           </p>
                         </div>
