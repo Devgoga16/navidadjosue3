@@ -253,16 +253,16 @@ export default function AdminDashboard() {
                 <table className="w-full">
                   <thead>
                     <tr className="border-b-2 border-blue-500/20">
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-blue-200">
+                      <th className="px-2 md:px-4 py-2 md:py-3 text-left text-xs md:text-sm font-semibold text-blue-200">
                         Nombre
                       </th>
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-blue-200">
+                      <th className="px-2 md:px-4 py-2 md:py-3 text-left text-xs md:text-sm font-semibold text-blue-200">
                         Correo
                       </th>
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-blue-200">
+                      <th className="px-2 md:px-4 py-2 md:py-3 text-left text-xs md:text-sm font-semibold text-blue-200">
                         Teléfono
                       </th>
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-blue-200">
+                      <th className="px-2 md:px-4 py-2 md:py-3 text-left text-xs md:text-sm font-semibold text-blue-200">
                         Fecha de Registro
                       </th>
                     </tr>
@@ -273,16 +273,16 @@ export default function AdminDashboard() {
                         key={participant.id}
                         className="border-b border-blue-500/10 hover:bg-blue-900/30 transition-colors"
                       >
-                        <td className="px-4 py-3 text-sm text-blue-200 font-medium">
+                        <td className="px-2 md:px-4 py-2 md:py-3 text-xs md:text-sm text-blue-200 font-medium">
                           {participant.name}
                         </td>
-                        <td className="px-4 py-3 text-sm text-blue-300">
+                        <td className="px-2 md:px-4 py-2 md:py-3 text-xs md:text-sm text-blue-300">
                           {participant.email}
                         </td>
-                        <td className="px-4 py-3 text-sm text-blue-300">
+                        <td className="px-2 md:px-4 py-2 md:py-3 text-xs md:text-sm text-blue-300">
                           {participant.phone}
                         </td>
-                        <td className="px-4 py-3 text-sm text-blue-300/70">
+                        <td className="px-2 md:px-4 py-2 md:py-3 text-xs md:text-sm text-blue-300/70">
                           {new Date(participant.createdAt).toLocaleDateString(
                             "es-ES",
                             {
