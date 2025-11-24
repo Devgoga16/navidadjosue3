@@ -106,7 +106,7 @@ export default function Auth() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4">
       {/* Content Container */}
-      <div>
+      <div className="w-full max-w-md">
         {/* Header with group name */}
         <div className="text-center mb-8">
           <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-400 via-blue-300 to-cyan-400 bg-clip-text text-transparent mb-2">
@@ -118,12 +118,12 @@ export default function Auth() {
           <BibleVerse
             verse={verse.verse}
             reference={verse.reference}
-            className="max-w-2xl mx-auto text-blue-100"
+            className="text-blue-100"
           />
         </div>
 
         {/* Auth Card */}
-        <div className="w-full max-w-md">
+        <div className="w-full">
           <Card className="shadow-2xl border-2 border-blue-500/30 bg-slate-900/95 backdrop-blur-sm">
             <CardHeader className="space-y-1 bg-gradient-to-r from-blue-900/50 to-slate-900/50 border-b border-blue-500/20">
               <CardTitle className="text-2xl bg-gradient-to-r from-blue-300 to-cyan-300 bg-clip-text text-transparent">
@@ -319,7 +319,7 @@ export default function Auth() {
         </div>
 
         {/* Footer with verse */}
-        <div className="mt-12 text-center max-w-2xl">
+        <div className="mt-12 text-center">
           <p className="text-xs text-blue-300 mb-2">
             Bendiciones para "Familia Josué"
           </p>
