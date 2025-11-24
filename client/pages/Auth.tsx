@@ -129,7 +129,6 @@ export default function Auth() {
                       value={formData.name}
                       onChange={handleInputChange}
                       required
-                      className="border-gray-300"
                     />
                   </div>
 
@@ -144,7 +143,6 @@ export default function Auth() {
                       value={formData.phone}
                       onChange={handleInputChange}
                       required
-                      className="border-gray-300"
                     />
                   </div>
 
