@@ -112,7 +112,9 @@ export default function ParticipantDashboard() {
           </div>
           <div className="flex items-center gap-3">
             <div className="text-right">
-              <p className="font-semibold text-blue-200 text-sm">{user?.name}</p>
+              <p className="font-semibold text-blue-200 text-sm">
+                {user?.name}
+              </p>
               <p className="text-xs text-blue-300">{user?.email}</p>
             </div>
             <Button
@@ -152,7 +154,10 @@ export default function ParticipantDashboard() {
                   Debes comprar un regalo para:
                 </p>
                 <div className="bg-slate-700/50 rounded-lg shadow-md p-4 md:p-8 inline-block border-2 border-blue-500/30 backdrop-blur-sm">
-                  <User size={32} className="mx-auto text-orange-400 mb-2 md:mb-4" />
+                  <User
+                    size={32}
+                    className="mx-auto text-orange-400 mb-2 md:mb-4"
+                  />
                   <p className="text-2xl md:text-4xl font-bold bg-gradient-to-r from-orange-300 to-orange-400 bg-clip-text text-transparent">
                     {hasAssignment}
                   </p>

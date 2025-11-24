@@ -93,7 +93,9 @@ export default function AdminDashboard() {
           </div>
           <div className="flex items-center gap-3">
             <div className="text-right">
-              <p className="font-semibold text-blue-200 text-sm">{user?.name}</p>
+              <p className="font-semibold text-blue-200 text-sm">
+                {user?.name}
+              </p>
               <p className="text-xs text-blue-300">{user?.email}</p>
             </div>
             <Button
@@ -131,9 +133,7 @@ export default function AdminDashboard() {
               <div className="text-2xl md:text-3xl font-bold text-blue-300">
                 {participants.length}
               </div>
-              <p className="text-xs text-blue-300/70 mt-1">
-                Registrados
-              </p>
+              <p className="text-xs text-blue-300/70 mt-1">Registrados</p>
             </CardContent>
           </Card>
 
@@ -164,7 +164,9 @@ export default function AdminDashboard() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl md:text-3xl font-bold text-blue-300">5 Dic</div>
+              <div className="text-2xl md:text-3xl font-bold text-blue-300">
+                5 Dic
+              </div>
               <p className="text-xs text-blue-300/70 mt-1">2025</p>
             </CardContent>
           </Card>
@@ -174,7 +176,9 @@ export default function AdminDashboard() {
         {!hasDrawn && (
           <Card className="border-2 border-orange-500/40 shadow-lg mb-4 md:mb-6 bg-slate-800/70 backdrop-blur-sm">
             <CardHeader className="border-b border-orange-500/20 pb-2">
-              <CardTitle className="text-sm md:text-base text-blue-200">Realizar Sorteo</CardTitle>
+              <CardTitle className="text-sm md:text-base text-blue-200">
+                Realizar Sorteo
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-blue-300 mb-3 text-sm">
@@ -205,7 +209,8 @@ export default function AdminDashboard() {
             </CardHeader>
             <CardContent>
               <p className="text-blue-200 text-xs md:text-sm mb-3">
-                El sorteo ha sido realizado. Los participantes pueden ver sus asignaciones.
+                El sorteo ha sido realizado. Los participantes pueden ver sus
+                asignaciones.
               </p>
               <div className="space-y-1 text-xs md:text-sm text-blue-300">
                 {drawResults.slice(0, 5).map((result) => (
