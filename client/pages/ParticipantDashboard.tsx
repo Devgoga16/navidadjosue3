@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 import { LogOut, Gift, Clock, User } from "lucide-react";
+import BibleVerse, { getVerseByTheme } from "@/components/BibleVerse";
 
 interface CountdownState {
   days: number;
@@ -25,6 +26,8 @@ export default function ParticipantDashboard() {
   const [hasAssignment, setHasAssignment] = useState<string | null>(null);
   const [isLoadingAssignment, setIsLoadingAssignment] = useState(false);
   const [showAssignment, setShowAssignment] = useState(false);
+
+  const verse = getVerseByTheme("love");
 
   useEffect(() => {
     if (user?.role !== "participant") {
@@ -95,31 +98,34 @@ export default function ParticipantDashboard() {
     countdown.seconds === 0;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-cyan-50">
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-red-50 to-yellow-50">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <header className="bg-gradient-to-r from-amber-100 to-red-100 shadow-lg border-b-4 border-red-700">
+        <div className="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-cyan-600 bg-clip-text text-transparent">
-              Amigo Secreto
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-amber-700 to-red-700 bg-clip-text text-transparent">
+              Familia Josué
             </h1>
-            <p className="text-gray-600 text-sm mt-1">Panel de Participante</p>
+            <p className="text-red-700 font-semibold mt-1">Panel de Participante</p>
           </div>
           <div className="flex items-center gap-4">
             <div className="text-right">
-              <p className="font-semibold text-gray-900">{user?.name}</p>
-              <p className="text-sm text-gray-600">{user?.email}</p>
+              <p className="font-semibold text-red-900">{user?.name}</p>
+              <p className="text-sm text-red-700">{user?.email}</p>
             </div>
             <Button
               onClick={handleLogout}
               variant="outline"
               size="sm"
-              className="gap-2"
+              className="gap-2 text-red-700 border-red-300 hover:bg-red-50"
             >
               <LogOut size={18} />
               Cerrar Sesión
             </Button>
           </div>
+        </div>
+        <div className="max-w-7xl mx-auto px-6 pb-4">
+          <BibleVerse verse={verse.verse} reference={verse.reference} />
         </div>
       </header>
 
@@ -127,27 +133,27 @@ export default function ParticipantDashboard() {
       <main className="max-w-7xl mx-auto px-6 py-8">
         {/* Assignment Card */}
         {showAssignment && hasAssignment ? (
-          <Card className="border-0 shadow-lg mb-8 bg-gradient-to-r from-green-50 to-emerald-50">
-            <CardHeader>
+          <Card className="border-2 border-green-300 shadow-lg mb-8 bg-gradient-to-r from-green-50 to-emerald-50">
+            <CardHeader className="bg-gradient-to-r from-green-100 to-emerald-100">
               <CardTitle className="text-green-900 flex items-center gap-2">
-                <Gift size={24} className="text-green-600" />
+                <Gift size={24} className="text-green-700" />
                 ¡Tu Asignación!
               </CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="pt-6">
               <div className="text-center py-8">
-                <p className="text-gray-600 mb-4">
+                <p className="text-green-700 mb-4 font-semibold">
                   Debes comprar un regalo para:
                 </p>
-                <div className="bg-white rounded-lg shadow-md p-8 inline-block">
-                  <User size={48} className="mx-auto text-gray-300 mb-4" />
-                  <p className="text-4xl font-bold text-transparent bg-gradient-to-r from-purple-600 to-cyan-600 bg-clip-text">
+                <div className="bg-white rounded-lg shadow-md p-8 inline-block border-2 border-green-200">
+                  <User size={48} className="mx-auto text-green-300 mb-4" />
+                  <p className="text-4xl font-bold text-transparent bg-gradient-to-r from-amber-700 to-red-700 bg-clip-text">
                     {hasAssignment}
                   </p>
                 </div>
-                <p className="text-gray-600 mt-6 text-sm max-w-md mx-auto">
+                <p className="text-green-700 mt-6 text-sm max-w-md mx-auto font-medium">
                   El sorteo ha sido realizado. Tienes asignado a {hasAssignment}.
-                  ¡Prepara un regalo especial!
+                  ¡Prepara un regalo especial con mucho amor!
                 </p>
               </div>
             </CardContent>
@@ -155,27 +161,27 @@ export default function ParticipantDashboard() {
         ) : (
           <>
             {/* Waiting Card */}
-            <Card className="border-0 shadow-lg mb-8 bg-gradient-to-r from-blue-50 to-cyan-50">
-              <CardHeader>
-                <CardTitle className="text-blue-900 flex items-center gap-2">
-                  <Clock size={24} className="text-blue-600" />
+            <Card className="border-2 border-amber-300 shadow-lg mb-8 bg-gradient-to-r from-amber-50 to-red-50">
+              <CardHeader className="bg-gradient-to-r from-amber-100 to-red-100">
+                <CardTitle className="text-red-900 flex items-center gap-2">
+                  <Clock size={24} className="text-red-700" />
                   {drawDatePassed
                     ? "El Sorteo Ha Comenzado"
                     : "Contando los Días..."}
                 </CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="pt-6">
                 <div className="text-center">
                   {drawDatePassed ? (
                     <div className="py-8">
-                      <p className="text-gray-600 mb-6">
+                      <p className="text-red-700 mb-6 font-medium">
                         El sorteo ya se ha realizado. Tu asignación debería
                         estar disponible pronto.
                       </p>
                       <Button
                         onClick={fetchAssignment}
                         disabled={isLoadingAssignment}
-                        className="bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700 text-white"
+                        className="bg-gradient-to-r from-amber-700 to-red-700 hover:from-amber-800 hover:to-red-800 text-white font-semibold"
                       >
                         {isLoadingAssignment
                           ? "Cargando..."
@@ -184,39 +190,47 @@ export default function ParticipantDashboard() {
                     </div>
                   ) : (
                     <>
-                      <p className="text-gray-600 mb-8">
+                      <p className="text-red-700 mb-8 font-medium">
                         Falta poco para el sorteo del evento
                       </p>
                       <div className="grid grid-cols-4 gap-4 mb-8">
-                        <div className="bg-white rounded-lg p-6 shadow-md">
-                          <div className="text-4xl font-bold text-purple-600">
+                        <div className="bg-white rounded-lg p-6 shadow-md border-2 border-amber-200">
+                          <div className="text-4xl font-bold text-amber-700">
                             {String(countdown.days).padStart(2, "0")}
                           </div>
-                          <p className="text-sm text-gray-600 mt-2">Días</p>
+                          <p className="text-sm text-red-700 mt-2 font-semibold">
+                            Días
+                          </p>
                         </div>
-                        <div className="bg-white rounded-lg p-6 shadow-md">
-                          <div className="text-4xl font-bold text-purple-600">
+                        <div className="bg-white rounded-lg p-6 shadow-md border-2 border-amber-200">
+                          <div className="text-4xl font-bold text-amber-700">
                             {String(countdown.hours).padStart(2, "0")}
                           </div>
-                          <p className="text-sm text-gray-600 mt-2">Horas</p>
+                          <p className="text-sm text-red-700 mt-2 font-semibold">
+                            Horas
+                          </p>
                         </div>
-                        <div className="bg-white rounded-lg p-6 shadow-md">
-                          <div className="text-4xl font-bold text-purple-600">
+                        <div className="bg-white rounded-lg p-6 shadow-md border-2 border-amber-200">
+                          <div className="text-4xl font-bold text-amber-700">
                             {String(countdown.minutes).padStart(2, "0")}
                           </div>
-                          <p className="text-sm text-gray-600 mt-2">Minutos</p>
+                          <p className="text-sm text-red-700 mt-2 font-semibold">
+                            Minutos
+                          </p>
                         </div>
-                        <div className="bg-white rounded-lg p-6 shadow-md">
-                          <div className="text-4xl font-bold text-purple-600">
+                        <div className="bg-white rounded-lg p-6 shadow-md border-2 border-amber-200">
+                          <div className="text-4xl font-bold text-amber-700">
                             {String(countdown.seconds).padStart(2, "0")}
                           </div>
-                          <p className="text-sm text-gray-600 mt-2">Segundos</p>
+                          <p className="text-sm text-red-700 mt-2 font-semibold">
+                            Segundos
+                          </p>
                         </div>
                       </div>
-                      <div className="bg-white rounded-lg p-6 shadow-md inline-block">
-                        <p className="text-gray-600">
+                      <div className="bg-white rounded-lg p-6 shadow-md inline-block border-2 border-amber-200">
+                        <p className="text-red-700 font-medium">
                           Fecha del evento:{" "}
-                          <strong className="text-gray-900">
+                          <strong className="text-red-900">
                             5 de Diciembre de 2025
                           </strong>
                         </p>
@@ -228,21 +242,23 @@ export default function ParticipantDashboard() {
             </Card>
 
             {/* Info Card */}
-            <Card className="border-0 shadow-lg">
-              <CardHeader>
-                <CardTitle>Información del Evento</CardTitle>
+            <Card className="border-2 border-amber-200 shadow-lg">
+              <CardHeader className="bg-gradient-to-r from-amber-50 to-red-50">
+                <CardTitle className="text-red-900">
+                  Información del Evento
+                </CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="pt-6">
                 <div className="space-y-4">
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Gift size={24} className="text-purple-600" />
+                    <div className="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center flex-shrink-0 border-2 border-amber-300">
+                      <Gift size={24} className="text-amber-700" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-gray-900">
+                      <h3 className="font-semibold text-red-900">
                         ¿Qué es Amigo Secreto?
                       </h3>
-                      <p className="text-gray-600 text-sm mt-1">
+                      <p className="text-red-700 text-sm mt-1">
                         Es un juego donde cada participante debe regalar algo a
                         la persona que le toque en el sorteo, de forma anónima o
                         sorpresa.
@@ -250,14 +266,14 @@ export default function ParticipantDashboard() {
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Clock size={24} className="text-blue-600" />
+                    <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center flex-shrink-0 border-2 border-red-300">
+                      <Clock size={24} className="text-red-700" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-gray-900">
+                      <h3 className="font-semibold text-red-900">
                         ¿Cuándo se realiza el sorteo?
                       </h3>
-                      <p className="text-gray-600 text-sm mt-1">
+                      <p className="text-red-700 text-sm mt-1">
                         El sorteo se realizará el 5 de diciembre de 2025. Una
                         vez realizado, podrás ver a quién le debes comprar el
                         regalo.
@@ -265,14 +281,14 @@ export default function ParticipantDashboard() {
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-cyan-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <User size={24} className="text-cyan-600" />
+                    <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center flex-shrink-0 border-2 border-yellow-300">
+                      <User size={24} className="text-yellow-700" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-gray-900">
+                      <h3 className="font-semibold text-red-900">
                         ¿Cómo participo?
                       </h3>
-                      <p className="text-gray-600 text-sm mt-1">
+                      <p className="text-red-700 text-sm mt-1">
                         Ya estás registrado. Solo espera a que se realice el
                         sorteo y verás a quién te tocó en esta página.
                       </p>
@@ -284,6 +300,16 @@ export default function ParticipantDashboard() {
           </>
         )}
       </main>
+
+      {/* Footer */}
+      <footer className="bg-gradient-to-r from-red-700 to-amber-700 text-white mt-12 py-6">
+        <div className="max-w-7xl mx-auto px-6 text-center">
+          <p className="text-sm mb-2">
+            "Amados, amémonos unos a otros, porque el amor viene de Dios."
+          </p>
+          <p className="text-xs opacity-90">1 Juan 4:7</p>
+        </div>
+      </footer>
     </div>
   );
 }
