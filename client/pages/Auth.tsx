@@ -191,7 +191,6 @@ export default function Auth() {
                   value={formData.email}
                   onChange={handleInputChange}
                   required
-                  className="border-gray-300"
                 />
               </div>
 
@@ -206,7 +205,6 @@ export default function Auth() {
                   value={formData.password}
                   onChange={handleInputChange}
                   required
-                  className="border-gray-300"
                 />
               </div>
 
