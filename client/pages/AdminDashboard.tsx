@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
 import { LogOut, Users, Play } from "lucide-react";
-import BibleVerse, { getVerseByTheme } from "@/components/BibleVerse";
+import BibleVerse from "@/components/BibleVerse";
 
 export default function AdminDashboard() {
   const { user, logout } = useAuth();
@@ -28,8 +28,6 @@ export default function AdminDashboard() {
   const [drawResults, setDrawResults] = useState<DrawResult[]>([]);
   const [showDrawDialog, setShowDrawDialog] = useState(false);
   const [showResetDialog, setShowResetDialog] = useState(false);
-
-  const verse = getVerseByTheme("harmony");
 
   useEffect(() => {
     if (!user?.esAdmin) {
@@ -164,11 +162,7 @@ export default function AdminDashboard() {
           </div>
         </div>
         <div className="max-w-7xl mx-auto px-4 md:px-6 pb-3">
-          <BibleVerse
-            verse={verse.verse}
-            reference={verse.reference}
-            className="text-blue-100 text-xs md:text-sm"
-          />
+          <BibleVerse className="text-blue-100 text-xs md:text-sm" />
         </div>
       </header>
 

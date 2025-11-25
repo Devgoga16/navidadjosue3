@@ -1,25 +1,40 @@
+import { useState, useEffect } from "react";
+
 interface BibleVerseProps {
-  verse: string;
-  reference: string;
   className?: string;
+  interval?: number; // En milisegundos, default 10 segundos
 }
 
 export default function BibleVerse({
-  verse,
-  reference,
   className = "",
+  interval = 10000, // 10 segundos por defecto
 }: BibleVerseProps) {
+  const [currentVerse, setCurrentVerse] = useState(() => getRandomVerse());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentVerse(getRandomVerse());
+    }, interval);
+
+    return () => clearInterval(timer);
+  }, [interval]);
+
   return (
     <div
-      className={`text-center italic text-sm py-3 px-4 bg-gradient-to-r from-blue-900/40 to-slate-900/40 rounded-lg border border-blue-500/20 backdrop-blur-sm ${className}`}
+      className={`text-center italic text-sm py-3 px-4 bg-gradient-to-r from-blue-900/40 to-slate-900/40 rounded-lg border border-blue-500/20 backdrop-blur-sm transition-all duration-500 ${className}`}
     >
-      <p className="mb-1 text-blue-200">"{verse}"</p>
-      <p className="text-xs font-semibold text-blue-300/70">— {reference}</p>
+      <p className="mb-1 text-blue-200">"{currentVerse.verse}"</p>
+      <p className="text-xs font-semibold text-blue-300/70">— {currentVerse.reference}</p>
     </div>
   );
 }
 
-// Colección de versículos para "Familia Josué"
+// ============================================================
+// AGREGA TUS VERSÍCULOS BÍBLICOS AQUÍ
+// ============================================================
+// Cada versículo debe tener: verse (el texto), reference (la cita), y theme (opcional)
+// ============================================================
+
 export const familiaJosueVerses = [
   {
     verse:
@@ -56,7 +71,23 @@ export const familiaJosueVerses = [
     reference: "Filipenses 2:2",
     theme: "celebration",
   },
+  {
+    verse:
+      "Que la paz de Cristo reine en vuestros corazones, a la cual asimismo fuisteis llamados en un solo cuerpo.",
+    reference: "Colosenses 3:15",
+    theme: "peace",
+  },
+  {
+    verse:
+      "Porque donde dos o tres se reúnen en mi nombre, allí estoy yo en medio de ellos.",
+    reference: "Mateo 18:20",
+    theme: "unity",
+  },
 ];
+
+// ============================================================
+// FIN DE LA SECCIÓN DE VERSÍCULOS
+// ============================================================
 
 export function getVerseByTheme(theme: string) {
   const filtered = familiaJosueVerses.filter((v) => v.theme === theme);

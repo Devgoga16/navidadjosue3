@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 import { LogOut, Gift, Clock, User } from "lucide-react";
-import BibleVerse, { getVerseByTheme } from "@/components/BibleVerse";
+import BibleVerse from "@/components/BibleVerse";
 
 interface CountdownState {
   days: number;
@@ -34,8 +34,6 @@ export default function ParticipantDashboard() {
   const [amigoSecreto, setAmigoSecreto] = useState<AmigoSecreto | null>(null);
   const [isLoadingAssignment, setIsLoadingAssignment] = useState(false);
   const [sorteoRealizado, setSorteoRealizado] = useState(false);
-
-  const verse = getVerseByTheme("love");
 
   useEffect(() => {
     if (user?.esAdmin) {
@@ -142,11 +140,7 @@ export default function ParticipantDashboard() {
           </div>
         </div>
         <div className="max-w-7xl mx-auto px-4 md:px-6 pb-3">
-          <BibleVerse
-            verse={verse.verse}
-            reference={verse.reference}
-            className="text-blue-100 text-xs md:text-sm"
-          />
+          <BibleVerse className="text-blue-100 text-xs md:text-sm" />
         </div>
       </header>
 
