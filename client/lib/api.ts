@@ -4,6 +4,7 @@
  */
 
 export const API_BASE_URL = "https://sorteoapi.unify-tec.com/api";
+//export const API_BASE_URL = "http://localhost:3000/api";
 
 /**
  * API Endpoints
@@ -17,6 +18,9 @@ export const API_ENDPOINTS = {
   // Participant endpoints
   PARTICIPANTES: `${API_BASE_URL}/participantes`,
   MI_AMIGO_SECRETO: (userId: string) => `${API_BASE_URL}/mi-amigo-secreto/${userId}`,
+  ENCUESTA: `${API_BASE_URL}/encuesta`,
+  ENCUESTA_VERIFICAR: (userId: string) => `${API_BASE_URL}/encuesta/verificar/${userId}`,
+  ENCUESTA_AMIGO_SECRETO: (userId: string) => `${API_BASE_URL}/encuesta/amigo-secreto/${userId}`,
   
   // Sorteo endpoints
   SORTEO: `${API_BASE_URL}/sorteo`,

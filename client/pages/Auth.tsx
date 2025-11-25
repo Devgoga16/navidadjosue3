@@ -13,7 +13,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { toast } from "sonner";
-import BibleVerse, { getVerseByTheme } from "@/components/BibleVerse";
+import BibleVerse from "@/components/BibleVerse";
 import {
   SkeletonText,
   SkeletonInput,
@@ -28,8 +28,6 @@ export default function Auth() {
   const [countdown, setCountdown] = useState(0);
   const navigate = useNavigate();
   const { login } = useAuth();
-
-  const verse = getVerseByTheme("christmas");
 
   const [formData, setFormData] = useState({
     phone: "",
@@ -187,11 +185,7 @@ export default function Auth() {
           <p className="text-blue-200 font-semibold text-xs md:text-sm mb-3">
             Sistema de Sorteo - Amigo Secreto
           </p>
-          <BibleVerse
-            verse={verse.verse}
-            reference={verse.reference}
-            className="text-blue-100"
-          />
+          <BibleVerse className="text-blue-100" />
         </div>
 
         {/* Auth Card */}

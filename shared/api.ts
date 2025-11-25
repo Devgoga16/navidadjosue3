@@ -27,6 +27,7 @@ export interface Participant {
   codigoAcceso?: string | null;
   codigoExpiracion?: string | null;
   amigoSecreto?: string;
+  encuestaCompletada?: boolean;
 }
 
 export interface DrawResult {
@@ -121,6 +122,62 @@ export interface MiAmigoSecretoResponse {
       nombreCompleto: string;
       numeroTelefono: string;
     };
+  };
+}
+
+export interface EncuestaRequest {
+  userId: string;
+  gustosActuales: string;
+  colorFavorito: string;
+  tipoRegalo: string;
+  quiereProbar: string;
+  tallaRopa: string;
+}
+
+export interface EncuestaResponse {
+  success: boolean;
+  message?: string;
+  error?: string;
+  data?: {
+    userId: string;
+    gustosActuales: string;
+    colorFavorito: string;
+    tipoRegalo: string;
+    quiereProbar: string;
+    tallaRopa: string;
+    createdAt: string;
+  };
+}
+
+export interface EncuestaVerificarResponse {
+  success: boolean;
+  message?: string;
+  error?: string;
+  data?: {
+    completada: boolean;
+    fechaCompletada?: string;
+    respuestas?: {
+      gustosActuales: string;
+      colorFavorito: string;
+      tipoRegalo: string;
+      quiereProbar: string;
+      tallaRopa: string;
+    };
+  };
+}
+
+export interface EncuestaAmigoSecretoResponse {
+  success: boolean;
+  message?: string;
+  error?: string;
+  data?: {
+    nombreCompleto: string;
+    gustosActuales: string;
+    colorFavorito: string;
+    tipoRegalo: string;
+    quiereProbar: string;
+    tallaRopa: string;
+    fechaCompletada: string;
   };
 }
 

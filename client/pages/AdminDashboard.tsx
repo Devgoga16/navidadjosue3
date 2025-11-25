@@ -326,7 +326,7 @@ export default function AdminDashboard() {
                         Teléfono
                       </th>
                       <th className="px-2 md:px-4 py-2 md:py-3 text-left text-xs md:text-sm font-semibold text-blue-200">
-                        Estado
+                        Encuesta
                       </th>
                       <th className="px-2 md:px-4 py-2 md:py-3 text-left text-xs md:text-sm font-semibold text-blue-200">
                         Fecha de Registro
@@ -347,11 +347,11 @@ export default function AdminDashboard() {
                         </td>
                         <td className="px-2 md:px-4 py-2 md:py-3 text-xs md:text-sm">
                           <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-                            participant.activo 
-                              ? "bg-green-900/30 text-green-400 border border-green-500/30" 
-                              : "bg-red-900/30 text-red-400 border border-red-500/30"
+                            participant.encuestaCompletada
+                              ? "bg-purple-900/30 text-purple-400 border border-purple-500/30" 
+                              : "bg-orange-900/30 text-orange-400 border border-orange-500/30"
                           }`}>
-                            {participant.activo ? "Activo" : "Inactivo"}
+                            {participant.encuestaCompletada ? "✓ Completada" : "Pendiente"}
                           </span>
                         </td>
                         <td className="px-2 md:px-4 py-2 md:py-3 text-xs md:text-sm text-blue-300/70">
