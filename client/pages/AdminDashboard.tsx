@@ -16,7 +16,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
-import { LogOut, Users, Play } from "lucide-react";
+import { LogOut, Users, Play, Gift, Snowflake, Sparkles, Star, Candy } from "lucide-react";
 import BibleVerse from "@/components/BibleVerse";
 
 export default function AdminDashboard() {
@@ -28,6 +28,7 @@ export default function AdminDashboard() {
   const [drawResults, setDrawResults] = useState<DrawResult[]>([]);
   const [showDrawDialog, setShowDrawDialog] = useState(false);
   const [showResetDialog, setShowResetDialog] = useState(false);
+  const [showAnimation, setShowAnimation] = useState(false);
 
   useEffect(() => {
     if (!user?.esAdmin) {
@@ -66,6 +67,12 @@ export default function AdminDashboard() {
 
   const confirmDraw = async () => {
     setShowDrawDialog(false);
+    setShowAnimation(true);
+    
+    // Wait 10 seconds for animation
+    await new Promise(resolve => setTimeout(resolve, 10000));
+    
+    setShowAnimation(false);
     setIsLoading(true);
     try {
       const response = await fetch(API_ENDPOINTS.SORTEO, { 
@@ -425,6 +432,64 @@ export default function AdminDashboard() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Christmas Animation Modal */}
+      {showAnimation && (
+        <div className="fixed inset-0 z-50 bg-slate-900/95 backdrop-blur-sm flex items-center justify-center">
+          <div className="text-center space-y-8 px-4">
+            <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-orange-300 via-red-300 to-pink-300 bg-clip-text text-transparent animate-pulse">
+              🎄 Realizando Sorteo... 🎁
+            </h2>
+            
+            {/* Animated Christmas Icons */}
+            <div className="relative w-full max-w-2xl h-64 mx-auto">
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="grid grid-cols-3 gap-8 animate-bounce">
+                  <Gift className="text-red-400 w-16 h-16 animate-spin" style={{ animationDuration: '3s' }} />
+                  <Snowflake className="text-blue-300 w-16 h-16 animate-spin" style={{ animationDuration: '4s' }} />
+                  <Star className="text-yellow-300 w-16 h-16 animate-spin" style={{ animationDuration: '2.5s' }} />
+                </div>
+              </div>
+              
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="grid grid-cols-5 gap-6 mt-32">
+                  <Sparkles className="text-pink-300 w-12 h-12 animate-pulse" style={{ animationDelay: '0s' }} />
+                  <Candy className="text-red-300 w-12 h-12 animate-pulse" style={{ animationDelay: '0.2s' }} />
+                  <Gift className="text-green-300 w-12 h-12 animate-pulse" style={{ animationDelay: '0.4s' }} />
+                  <Star className="text-yellow-400 w-12 h-12 animate-pulse" style={{ animationDelay: '0.6s' }} />
+                  <Snowflake className="text-cyan-300 w-12 h-12 animate-pulse" style={{ animationDelay: '0.8s' }} />
+                </div>
+              </div>
+              
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div className="w-64 h-64 bg-gradient-to-r from-red-500/20 via-green-500/20 to-blue-500/20 rounded-full blur-3xl animate-pulse"></div>
+              </div>
+            </div>
+            
+            <p className="text-blue-200 text-xl font-semibold animate-pulse">
+              Asignando amigos secretos de la familia Josué...
+            </p>
+            
+            {/* Progress bar */}
+            <div className="w-full max-w-md mx-auto bg-slate-700/50 rounded-full h-3 overflow-hidden">
+              <div 
+                className="h-full bg-gradient-to-r from-red-500 via-green-500 to-blue-500 animate-pulse"
+                style={{ 
+                  animation: 'progress 10s linear forwards',
+                  width: '0%'
+                }}
+              ></div>
+            </div>
+          </div>
+          
+          <style>{`
+            @keyframes progress {
+              from { width: 0%; }
+              to { width: 100%; }
+            }
+          `}</style>
+        </div>
+      )}
     </div>
   );
 }
