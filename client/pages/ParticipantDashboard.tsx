@@ -37,6 +37,7 @@ export default function ParticipantDashboard() {
   const [amigoSecreto, setAmigoSecreto] = useState<AmigoSecreto | null>(null);
   const [isLoadingAssignment, setIsLoadingAssignment] = useState(false);
   const [sorteoRealizado, setSorteoRealizado] = useState(false);
+  const [assignmentFetched, setAssignmentFetched] = useState(false);
   
   // Encuesta del amigo secreto
   const [encuestaAmigoSecreto, setEncuestaAmigoSecreto] = useState<EncuestaAmigoSecretoResponse['data'] | null>(null);
@@ -75,16 +76,22 @@ export default function ParticipantDashboard() {
         });
       } else {
         setCountdown({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-        // Try to fetch assignment if draw date has passed
-        fetchAssignment();
+        // Only fetch once when draw date passes
+        if (!assignmentFetched) {
+          fetchAssignment();
+          setAssignmentFetched(true);
+        }
       }
     };
 
     updateCountdown();
     const interval = setInterval(updateCountdown, 1000);
 
-    // Try to fetch assignment on load
-    fetchAssignment();
+    // Try to fetch assignment on load only once
+    if (!assignmentFetched) {
+      fetchAssignment();
+      setAssignmentFetched(true);
+    }
     
     // Verificar si ya completó la encuesta
     verificarEncuesta();
