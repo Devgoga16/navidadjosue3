@@ -160,6 +160,7 @@ export default function ParticipantDashboard() {
     if (!user?._id) return;
     setIsLoadingEncuestaAmigo(true);
     try {
+      console.log('se esta llamando')
       const response = await fetch(API_ENDPOINTS.ENCUESTA_AMIGO_SECRETO(user._id), {
         method: "GET",
         headers: { "accept": "application/json" },
