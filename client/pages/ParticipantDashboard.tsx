@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 import { LogOut, Gift, Clock, User, ClipboardList, Heart } from "lucide-react";
 import BibleVerse from "@/components/BibleVerse";
@@ -213,6 +214,9 @@ export default function ParticipantDashboard() {
     countdown.minutes === 0 &&
     countdown.seconds === 0;
 
+  const hasAssignmentData = Boolean(sorteoRealizado && amigoSecreto);
+  const shouldShowAssignmentSection = hasAssignmentData || (drawDatePassed && isLoadingAssignment);
+
   return (
     <div className="min-h-screen bg-transparent">
       {/* Header */}
@@ -252,7 +256,7 @@ export default function ParticipantDashboard() {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 py-3 md:px-6 md:py-6">
         {/* Assignment Card */}
-        {sorteoRealizado && amigoSecreto ? (
+        {shouldShowAssignmentSection ? (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 mb-4 md:mb-6">
             {/* Left: Tu Asignación */}
             <Card className="border-2 border-orange-500/40 shadow-lg bg-slate-800/70 backdrop-blur-sm">
@@ -263,107 +267,130 @@ export default function ParticipantDashboard() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="pt-3 md:pt-6">
-                <div className="text-center py-4 md:py-8">
-                  <p className="text-blue-200 mb-3 md:mb-4 font-semibold text-sm">
-                    Tu amigo(a) secreto es:
-                  </p>
-                  <div className="bg-slate-700/50 rounded-lg shadow-md p-4 md:p-8 inline-block border-2 border-blue-500/30 backdrop-blur-sm">
-                    <User
-                      size={32}
-                      className="mx-auto text-orange-400 mb-2 md:mb-4"
-                    />
-                    <p className="text-2xl md:text-4xl font-bold bg-gradient-to-r from-orange-300 to-orange-400 bg-clip-text text-transparent">
-                      {amigoSecreto.nombreCompleto}
-                    </p>
-                    <p className="text-blue-300 mt-2 text-sm">
-                      {amigoSecreto.numeroTelefono}
-                    </p>
-                  </div>
-                  <p className="text-blue-200 mt-4 md:mt-6 text-xs md:text-sm max-w-md mx-auto font-medium">
-                    El sorteo ha sido realizado. Tienes asignado a {amigoSecreto.nombreCompleto}. ¡Prepara un regalo especial!
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Right: Encuesta del Amigo Secreto */}
-            <Card className="border-2 border-pink-500/40 shadow-lg bg-slate-800/70 backdrop-blur-sm">
-              <CardHeader className="border-b border-pink-500/20 pb-2">
-                <CardTitle className="text-pink-300 flex items-center gap-2 text-sm md:text-base">
-                  <Heart size={20} className="text-pink-400" />
-                  Preferencias de {amigoSecreto.nombreCompleto}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="pt-4">
-                {isLoadingEncuestaAmigo ? (
-                  <div className="text-center py-8">
-                    <div className="w-12 h-12 border-4 border-pink-500/30 border-t-pink-500 rounded-full animate-spin mx-auto mb-4"></div>
-                    <p className="text-blue-300/70 text-sm">Cargando preferencias...</p>
-                  </div>
-                ) : encuestaAmigoSecreto ? (
-                  <div className="space-y-4">
-                    <p className="text-blue-300/80 text-sm mb-4">
-                      Tu amigo secreto ha compartido sus preferencias para ayudarte a elegir el regalo perfecto:
-                    </p>
-                    
-                    <div className="bg-slate-900/50 rounded-lg p-3 border border-pink-500/20">
-                      <label className="text-pink-300 font-semibold text-xs mb-1 block">
-                        Gustos Actuales
-                      </label>
-                      <p className="text-blue-200 text-xs whitespace-pre-wrap">
-                        {encuestaAmigoSecreto.gustosActuales || "No especificado"}
-                      </p>
+                {isLoadingAssignment && !hasAssignmentData ? (
+                  <div className="py-6 space-y-6">
+                    <Skeleton className="h-4 w-48 bg-slate-600/60 mx-auto" />
+                    <div className="bg-slate-700/50 rounded-lg shadow-md p-6 border-2 border-slate-600/40 backdrop-blur-sm">
+                      <Skeleton className="h-10 w-10 rounded-full bg-slate-600/60 mx-auto mb-4" />
+                      <Skeleton className="h-8 w-3/4 bg-slate-600/60 mx-auto" />
+                      <Skeleton className="h-4 w-1/2 bg-slate-600/60 mx-auto mt-3" />
                     </div>
-
-                    <div className="bg-slate-900/50 rounded-lg p-3 border border-pink-500/20">
-                      <label className="text-pink-300 font-semibold text-xs mb-1 block">
-                        Color Favorito
-                      </label>
-                      <p className="text-blue-200 text-xs">
-                        {encuestaAmigoSecreto.colorFavorito || "No especificado"}
-                      </p>
-                    </div>
-
-                    <div className="bg-slate-900/50 rounded-lg p-3 border border-pink-500/20">
-                      <label className="text-pink-300 font-semibold text-xs mb-1 block">
-                        Tipo de Regalo Preferido
-                      </label>
-                      <p className="text-blue-200 text-xs">
-                        {encuestaAmigoSecreto.tipoRegalo || "No especificado"}
-                      </p>
-                    </div>
-
-                    <div className="bg-slate-900/50 rounded-lg p-3 border border-pink-500/20">
-                      <label className="text-pink-300 font-semibold text-xs mb-1 block">
-                        Cosas que Quiere Probar
-                      </label>
-                      <p className="text-blue-200 text-xs whitespace-pre-wrap">
-                        {encuestaAmigoSecreto.quiereProbar || "No especificado"}
-                      </p>
-                    </div>
-
-                    <div className="bg-slate-900/50 rounded-lg p-3 border border-pink-500/20">
-                      <label className="text-pink-300 font-semibold text-xs mb-1 block">
-                        Talla de Ropa
-                      </label>
-                      <p className="text-blue-200 text-xs">
-                        {encuestaAmigoSecreto.tallaRopa || "No especificado"}
-                      </p>
-                    </div>
-
-                    <p className="text-blue-300/60 text-xs mt-4 italic">
-                      Encuesta completada el {new Date(encuestaAmigoSecreto.fechaCompletada).toLocaleDateString('es-ES')}
-                    </p>
+                    <Skeleton className="h-3 w-64 bg-slate-600/60 mx-auto" />
                   </div>
                 ) : (
-                  <div className="text-center py-8">
-                    <p className="text-blue-300/70 text-sm">
-                      Tu amigo secreto aún no ha completado la encuesta de preferencias.
+                  <div className="text-center py-4 md:py-8">
+                    <p className="text-blue-200 mb-3 md:mb-4 font-semibold text-sm">
+                      Tu amigo(a) secreto es:
                     </p>
+                    <div className="bg-slate-700/50 rounded-lg shadow-md p-4 md:p-8 inline-block border-2 border-blue-500/30 backdrop-blur-sm">
+                      <User
+                        size={32}
+                        className="mx-auto text-orange-400 mb-2 md:mb-4"
+                      />
+                      <p className="text-2xl md:text-4xl font-bold bg-gradient-to-r from-orange-300 to-orange-400 bg-clip-text text-transparent">
+                        {amigoSecreto?.nombreCompleto}
+                      </p>
+                      <p className="text-blue-300 mt-2 text-sm">
+                        {amigoSecreto?.numeroTelefono}
+                      </p>
+                    </div>
+                    {amigoSecreto && (
+                      <p className="text-blue-200 mt-4 md:mt-6 text-xs md:text-sm max-w-md mx-auto font-medium">
+                        El sorteo ha sido realizado. Tienes asignado a {amigoSecreto.nombreCompleto}. ¡Prepara un regalo especial!
+                      </p>
+                    )}
                   </div>
                 )}
               </CardContent>
             </Card>
+
+            {/* Right: Encuesta del Amigo Secreto */}
+            {hasAssignmentData && (
+              <Card className="border-2 border-pink-500/40 shadow-lg bg-slate-800/70 backdrop-blur-sm">
+                <CardHeader className="border-b border-pink-500/20 pb-2">
+                  <CardTitle className="text-pink-300 flex items-center gap-2 text-sm md:text-base">
+                    <Heart size={20} className="text-pink-400" />
+                    Preferencias de {amigoSecreto?.nombreCompleto}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="pt-4">
+                  {isLoadingEncuestaAmigo ? (
+                    <div className="space-y-4">
+                      <div className="grid grid-cols-1 gap-3">
+                        {[1, 2, 3, 4, 5].map((item) => (
+                          <div key={item} className="bg-slate-900/50 rounded-lg p-3 border border-pink-500/10">
+                            <Skeleton className="h-3 w-1/3 bg-slate-600/60 mb-2" />
+                            <Skeleton className="h-4 w-full bg-slate-600/60" />
+                          </div>
+                        ))}
+                      </div>
+                      <Skeleton className="h-3 w-32 bg-slate-600/60" />
+                    </div>
+                  ) : encuestaAmigoSecreto ? (
+                    <div className="space-y-4">
+                      <p className="text-blue-300/80 text-sm mb-4">
+                        Tu amigo secreto ha compartido sus preferencias para ayudarte a elegir el regalo perfecto:
+                      </p>
+                      
+                      <div className="bg-slate-900/50 rounded-lg p-3 border border-pink-500/20">
+                        <label className="text-pink-300 font-semibold text-xs mb-1 block">
+                          Gustos Actuales
+                        </label>
+                        <p className="text-blue-200 text-xs whitespace-pre-wrap">
+                          {encuestaAmigoSecreto.gustosActuales || "No especificado"}
+                        </p>
+                      </div>
+
+                      <div className="bg-slate-900/50 rounded-lg p-3 border border-pink-500/20">
+                        <label className="text-pink-300 font-semibold text-xs mb-1 block">
+                          Color Favorito
+                        </label>
+                        <p className="text-blue-200 text-xs">
+                          {encuestaAmigoSecreto.colorFavorito || "No especificado"}
+                        </p>
+                      </div>
+
+                      <div className="bg-slate-900/50 rounded-lg p-3 border border-pink-500/20">
+                        <label className="text-pink-300 font-semibold text-xs mb-1 block">
+                          Tipo de Regalo Preferido
+                        </label>
+                        <p className="text-blue-200 text-xs">
+                          {encuestaAmigoSecreto.tipoRegalo || "No especificado"}
+                        </p>
+                      </div>
+
+                      <div className="bg-slate-900/50 rounded-lg p-3 border border-pink-500/20">
+                        <label className="text-pink-300 font-semibold text-xs mb-1 block">
+                          Cosas que Quiere Probar
+                        </label>
+                        <p className="text-blue-200 text-xs whitespace-pre-wrap">
+                          {encuestaAmigoSecreto.quiereProbar || "No especificado"}
+                        </p>
+                      </div>
+
+                      <div className="bg-slate-900/50 rounded-lg p-3 border border-pink-500/20">
+                        <label className="text-pink-300 font-semibold text-xs mb-1 block">
+                          Talla de Ropa
+                        </label>
+                        <p className="text-blue-200 text-xs">
+                          {encuestaAmigoSecreto.tallaRopa || "No especificado"}
+                        </p>
+                      </div>
+
+                      <p className="text-blue-300/60 text-xs mt-4 italic">
+                        Encuesta completada el {new Date(encuestaAmigoSecreto.fechaCompletada).toLocaleDateString('es-ES')}
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="text-center py-8">
+                      <p className="text-blue-300/70 text-sm">
+                        Tu amigo secreto aún no ha completado la encuesta de preferencias.
+                      </p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            )}
           </div>
         ) : (
           <>
@@ -394,6 +421,12 @@ export default function ParticipantDashboard() {
                           ? "Cargando..."
                           : "Ver Mi Asignación"}
                       </Button>
+                      {isLoadingAssignment && (
+                        <div className="mt-4 flex flex-col items-center gap-2 text-blue-200/80 text-sm">
+                          <div className="w-10 h-10 border-4 border-orange-500/30 border-t-orange-500 rounded-full animate-spin"></div>
+                          <p>Consultando tu amigo secreto...</p>
+                        </div>
+                      )}
                     </div>
                   ) : (
                     <>
