@@ -42,6 +42,7 @@ export default function ParticipantDashboard() {
   // Encuesta del amigo secreto
   const [encuestaAmigoSecreto, setEncuestaAmigoSecreto] = useState<EncuestaAmigoSecretoResponse['data'] | null>(null);
   const [isLoadingEncuestaAmigo, setIsLoadingEncuestaAmigo] = useState(false);
+  const [encuestaAmigoFetched, setEncuestaAmigoFetched] = useState(false);
   
   // Encuesta states
   const [encuestaEnviada, setEncuestaEnviada] = useState(false);
@@ -133,8 +134,11 @@ export default function ParticipantDashboard() {
       if (data.success && data.data) {
         setAmigoSecreto(data.data.amigoSecreto);
         setSorteoRealizado(true);
-        // Fetch secret friend's survey after getting assignment
-        fetchEncuestaAmigoSecreto();
+        // Fetch secret friend's survey after getting assignment (only once)
+        if (!encuestaAmigoFetched) {
+          fetchEncuestaAmigoSecreto();
+          setEncuestaAmigoFetched(true);
+        }
       } else {
         // Sorteo no realizado todavía
         setAmigoSecreto(null);
