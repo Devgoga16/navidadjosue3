@@ -48,6 +48,7 @@ export default function ParticipantDashboard() {
   const [encuestaEnviada, setEncuestaEnviada] = useState(false);
   const [isLoadingEncuesta, setIsLoadingEncuesta] = useState(false);
   const [isVerificandoEncuesta, setIsVerificandoEncuesta] = useState(true);
+  const [encuestaVerificada, setEncuestaVerificada] = useState(false);
   const [encuestaData, setEncuestaData] = useState({
     gustosActuales: "",
     colorFavorito: "",
@@ -94,8 +95,11 @@ export default function ParticipantDashboard() {
       setAssignmentFetched(true);
     }
     
-    // Verificar si ya completó la encuesta
-    verificarEncuesta();
+    // Verificar si ya completó la encuesta (solo una vez)
+    if (!encuestaVerificada) {
+      verificarEncuesta();
+      setEncuestaVerificada(true);
+    }
 
     return () => clearInterval(interval);
   }, [user, navigate]);
