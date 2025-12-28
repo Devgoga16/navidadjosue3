@@ -58,6 +58,11 @@ export default function Auth() {
 
     setIsLoading(true);
     try {
+      toast.info("Enviando código", {
+        description: API_ENDPOINTS.SEND_ACCESS_CODE,
+        duration: Infinity,
+      });
+
       const response = await fetch(API_ENDPOINTS.SEND_ACCESS_CODE, {
         method: "POST",
         headers: { 
@@ -110,6 +115,11 @@ export default function Auth() {
         }
         loginData.contrasena = formData.password;
       }
+
+      toast.info("Llamando al endpoint de login", {
+        description: API_ENDPOINTS.LOGIN,
+        duration: Infinity,
+      });
 
       const response = await fetch(API_ENDPOINTS.LOGIN, {
         method: "POST",
