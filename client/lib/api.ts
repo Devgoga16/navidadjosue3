@@ -3,7 +3,7 @@
  * Centralized API base URL configuration
  */
 
-export const API_BASE_URL = "https://sorteo-api-e8riu2-6dbe6f-31-97-133-67.traefik.me/api";
+export const API_BASE_URL = "http://sorteo-api-e8riu2-6dbe6f-31-97-133-67.traefik.me/api";
 
 //export const API_BASE_URL = "https://sorteoapi.unify-tec.com/api";
 //export const API_BASE_URL = "http://localhost:3000/api";
